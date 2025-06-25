@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b400f901-603c-41a2-ab96-003446be8858" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/VenConPlataBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/VenConPlataBackendApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +41,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.VenConPlataBackendApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/UPC/finanzas/backend",
@@ -47,6 +50,9 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
@@ -55,6 +61,16 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="VenConPlataBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="ven-con-plata-backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.upc.ven_con_plata_backend.VenConPlataBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -72,7 +88,7 @@
       <option name="presentableId" value="Default" />
       <updated>1750809642033</updated>
       <workItem from="1750809643333" duration="72000" />
-      <workItem from="1750809736241" duration="3915000" />
+      <workItem from="1750809736241" duration="12633000" />
     </task>
     <servers />
   </component>
