@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b400f901-603c-41a2-ab96-003446be8858" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/domain/model/aggregates/AuditableAbstractAggregateRoot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/domain/model/entities/AuditableModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/documentation/openapi/configuration/OpenApiConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/persistence/jpa/configuration/strategy/SnakeCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/persistence/jpa/configuration/strategy/SnakeCaseWithPluralizedTablePNS.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/interfaces/rest/resources/MessageResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/resources/MessageResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/VenConPlataBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/VenConPlataBackendApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,9 +48,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.VenConPlataBackendApplication.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "develop",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/UPC/finanzas/backend",
+    "last_opened_file_path": "C:/UPC/finanzas/backend/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -58,6 +64,10 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend\src\main\java\com\upc\ven_con_plata_backend" />
+      <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend\src\main\java\com\upc\ven_con_plata_backend\shared" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend" />
     </key>
@@ -88,7 +98,7 @@
       <option name="presentableId" value="Default" />
       <updated>1750809642033</updated>
       <workItem from="1750809643333" duration="72000" />
-      <workItem from="1750809736241" duration="12633000" />
+      <workItem from="1750809736241" duration="16981000" />
     </task>
     <servers />
   </component>
