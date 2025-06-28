@@ -5,15 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b400f901-603c-41a2-ab96-003446be8858" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/domain/model/aggregates/AuditableAbstractAggregateRoot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/domain/model/entities/AuditableModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/documentation/openapi/configuration/OpenApiConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/persistence/jpa/configuration/strategy/SnakeCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/persistence/jpa/configuration/strategy/SnakeCaseWithPluralizedTablePNS.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/interfaces/rest/resources/MessageResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/resources/MessageResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/application/internal/commandservices/RoleCommandServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/application/internal/commandservices/UserCommandServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/application/internal/eventhandlers/ApplicationReadyEventHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/application/internal/outboundservices/hashing/HashingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/application/internal/outboundservices/tokens/TokenService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/application/internal/queryservices/RoleQueryServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/application/internal/queryservices/UserQueryServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/aggregates/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/commands/SeedRolesCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/commands/SignInCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/commands/SignUpCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/entities/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/queries/GetAllRolesQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/queries/GetAllUsersQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/queries/GetRoleByNameQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/queries/GetUserByIdQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/queries/GetUserByUsernameQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/model/valueobjects/Roles.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/services/RoleCommandService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/services/RoleQueryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/services/UserCommandService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/domain/services/UserQueryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/authorization/sfs/configuration/WebSecurityConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/authorization/sfs/model/UserDetailsImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/authorization/sfs/model/UsernamePasswordAuthenticationTokenBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/authorization/sfs/pipeline/BearerAuthorizationRequestFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/authorization/sfs/pipeline/UnauthorizedRequestHandlerEntryPoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/authorization/sfs/services/UserDetailsServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/hashing/bcrypt/BCryptHashingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/hashing/bcrypt/services/HashingServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/persistence/jpa/repositories/RoleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/persistence/jpa/repositories/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/tokens/jwt/BearerTokenService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/infrastructure/tokens/jwt/services/TokenServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/acl/IamContextFacade.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/AuthenticationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/RolesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/UsersController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/resources/AuthenticatedUserResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/resources/RoleResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/resources/SignInResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/resources/SignUpResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/resources/UserResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/transform/AuthenticatedUserResourceFromEntityAssembler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/transform/RoleResourceFromEntityAssembler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/transform/SignInCommandFromResourceAssembler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/transform/SignUpCommandFromResourceAssembler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/iam/interfaces/rest/transform/UserResourceFromEntityAssembler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +87,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.VenConPlataBackendApplication.executor": "Run",
     "git-widget-placeholder": "develop",
     "ignore.virus.scanning.warn.message": "true",
@@ -98,7 +146,8 @@
       <option name="presentableId" value="Default" />
       <updated>1750809642033</updated>
       <workItem from="1750809643333" duration="72000" />
-      <workItem from="1750809736241" duration="16981000" />
+      <workItem from="1750809736241" duration="17851000" />
+      <workItem from="1751075379123" duration="2841000" />
     </task>
     <servers />
   </component>
