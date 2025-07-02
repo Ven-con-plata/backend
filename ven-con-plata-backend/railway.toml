@@ -1,6 +1,6 @@
 [build]
 builder        = "dockerfile"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "./ven-con-plata-backend/Dockerfile"
 
 [deploy]
 restartPolicyType = "always"
