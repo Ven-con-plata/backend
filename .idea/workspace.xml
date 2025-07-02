@@ -5,14 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b400f901-603c-41a2-ab96-003446be8858" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/aggregates/Bono.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/BeneficioInversion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInicialesDeudor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInversion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/GastosPeriodicosDeudor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Moneda.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Periodicidad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/PeriodosGracia.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Tasa.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/VenConPlataBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/VenConPlataBackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -29,22 +44,36 @@
     &quot;accountId&quot;: &quot;a1f917f6-029b-448e-97f1-11cb89461b8c&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2yybDfIqW9ZSLdAwNJsX3YtbxCL" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Docker.ven-con-plata-backend/Dockerfile.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.VenConPlataBackendApplication.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "develop",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/UPC/finanzas/backend",
+    "last_opened_file_path": "C:/UPC/finanzas/backend/ven-con-plata-backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -58,11 +87,17 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend" />
+      <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend\src\main\java\com\upc\ven_con_plata_backend" />
+      <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend\src\main\java\com\upc\ven_con_plata_backend\shared" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\UPC\finanzas\backend" />
       <recent name="C:\UPC\finanzas\backend\ven-con-plata-backend" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.VenConPlataBackendApplication">
     <configuration name="VenConPlataBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="ven-con-plata-backend" />
@@ -71,6 +106,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ven-con-plata-backend/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="ven-con-plata-backend/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.ven-con-plata-backend/Dockerfile" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -88,7 +140,9 @@
       <option name="presentableId" value="Default" />
       <updated>1750809642033</updated>
       <workItem from="1750809643333" duration="72000" />
-      <workItem from="1750809736241" duration="12633000" />
+      <workItem from="1750809736241" duration="17851000" />
+      <workItem from="1751075379123" duration="3947000" />
+      <workItem from="1751261047457" duration="13240000" />
     </task>
     <servers />
   </component>
