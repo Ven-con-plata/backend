@@ -18,14 +18,14 @@ public class OpenApiConfiguration {
         var openApi = new OpenAPI();
         openApi
                 .info(new Info()
-                        .title("ACME hormonal Care API")
-                        .description("ACME hormonal Care application REST API documentation.")
+                        .title("ACME Ven con Plata API")
+                        .description("ACME Ven con plara application REST API documentation.")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")
                                 .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("ACME hormonal Care Wiki Documentation")
-                        .url("https://acme-hormonal-care.wiki.github.io/docs"));
+                        .description("ACME Ven con Plata Wiki Documentation")
+                        .url("https://acme-ven-con-plata.wiki.github.io/docs"));
         // Add Security Scheme
         final String securitySchemeName = "bearerAuth";
         openApi.addSecurityItem(new SecurityRequirement()

@@ -5,21 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b400f901-603c-41a2-ab96-003446be8858" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/entities/CashFlowSchedule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CashFlowEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/IndicadoresEmisor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/IndicadoresInversor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/RolSchedule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/TipoEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/application/internal/commandservices/BonoCommandServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/application/internal/queryservices/BonoQueryServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/commands/CreateBonoCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/commands/UpdateBonoCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/queries/GetAllBonosQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/queries/GetBonoByIdQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/queries/GetBonosByCompanyIdQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/queries/GetBonosByEmisorIdQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/queries/GetBonosByInvestorIdQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/EstadoBono.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/services/BonoCommandService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/services/BonoQueryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/services/CalculadoraFinancieraDomainService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/infrastructure/persistence/jpa/repositories/BonoRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/BonoController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/resources/BonoResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/resources/CashFlowEntryResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/resources/CreateBonoResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/resources/UpdateBonoResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/transform/BonoResourceFromEntityAssembler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/transform/CreateBonoCommandFromResourceAssembler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/interfaces/rest/transform/UpdateBonoCommandFromResourceAssembler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/aggregates/Bono.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/aggregates/Bono.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/BeneficioInversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/BeneficioInversion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInicialesDeudor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInicialesDeudor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInversion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/GastosPeriodicosDeudor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/GastosPeriodicosDeudor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Periodicidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Periodicidad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/PeriodosGracia.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/PeriodosGracia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Tasa.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Tasa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/documentation/openapi/configuration/OpenApiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/shared/infrastructure/documentation/openapi/configuration/OpenApiConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/resources/application-prod.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +41,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
+        <option value="Record" />
         <option value="Enum" />
         <option value="Class" />
       </list>
@@ -49,10 +63,10 @@
     &quot;accountId&quot;: &quot;a1f917f6-029b-448e-97f1-11cb89461b8c&quot;
   }
 }</component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -87,8 +101,13 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.uml",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -147,11 +166,25 @@
       <workItem from="1750809643333" duration="72000" />
       <workItem from="1750809736241" duration="17851000" />
       <workItem from="1751075379123" duration="3947000" />
-      <workItem from="1751261047457" duration="26723000" />
+      <workItem from="1751261047457" duration="43723000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

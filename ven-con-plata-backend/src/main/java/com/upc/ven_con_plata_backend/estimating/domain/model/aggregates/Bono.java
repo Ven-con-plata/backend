@@ -78,6 +78,8 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     @Embedded
     private GastosPeriodicosDeudor gastosPeriodicosDeudor;
 
+    private EstadoBono estado = EstadoBono.BORRADOR;
+
     // Relación con los cronogramas (emisor e inversor)
     @OneToMany(mappedBy = "bono", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CashFlowSchedule> cronogramas = new ArrayList<>();
@@ -210,7 +212,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         }
     }
 
-    // Métodos auxiliares
     private void validarDatosBasicos(BigDecimal valorNominal, BigDecimal valorComercial,
                                      LocalDate fechaEmision, LocalDate fechaVencimiento) {
         if (valorNominal == null || valorNominal.compareTo(BigDecimal.ZERO) <= 0) {
@@ -230,6 +231,41 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     private void validarTasas(Tasa tasaInteres, Tasa cok) {
         if (tasaInteres == null || cok == null) {
             throw new IllegalArgumentException("Las tasas no pueden ser nulas");
+        }
+    }
+
+    private void validarPuedeSerModificado() {
+        if (this.estado != EstadoBono.BORRADOR) {
+            throw new IllegalStateException(
+                    String.format("No se puede modificar un bono en estado %s. Solo se pueden modificar bonos en estado BORRADOR.",
+                            this.estado.name())
+            );
+        }
+
+        if (estaVencido()) {
+            throw new IllegalStateException("No se puede modificar un bono vencido");
+        }
+    }
+
+    private void validarDatosFinancieros(BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaVencimiento) {
+        if (valorNominal == null || valorNominal.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El valor nominal debe ser mayor a cero");
+        }
+
+        if (valorComercial == null || valorComercial.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El valor comercial debe ser mayor a cero");
+        }
+
+        if (fechaVencimiento == null) {
+            throw new IllegalArgumentException("La fecha de vencimiento no puede ser nula");
+        }
+
+        if (fechaVencimiento.isBefore(this.fechaEmision)) {
+            throw new IllegalArgumentException("La fecha de vencimiento debe ser posterior a la fecha de emisión");
+        }
+
+        if (fechaVencimiento.isBefore(LocalDate.now().plusDays(30))) {
+            throw new IllegalArgumentException("La fecha de vencimiento debe ser al menos 30 días en el futuro");
         }
     }
 
@@ -266,7 +302,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         if (tasaPeriodica.compareTo(BigDecimal.ZERO) == 0) {
             return valorNominal.divide(BigDecimal.valueOf(periodos), 2, RoundingMode.HALF_UP);
         }
-
+        // Fórmula de la cuota constante usando el metodo francés
         BigDecimal factor = BigDecimal.ONE.add(tasaPeriodica).pow(periodos);
         return valorNominal.multiply(tasaPeriodica).multiply(factor)
                 .divide(factor.subtract(BigDecimal.ONE), 2, RoundingMode.HALF_UP);
@@ -291,9 +327,64 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
                 .orElse(null);
     }
 
-    // Metodo de conveniencia para saber que siempre usa método francés
+    private Integer calcularPlazoEnAnios(LocalDate fechaInicio, LocalDate fechaFin) {
+        return (int) ChronoUnit.YEARS.between(fechaInicio, fechaFin);
+    }
+
+    public boolean puedeSerModificado() {
+        return this.estado == EstadoBono.BORRADOR && !estaVencido();
+    }
+
+    public void activar() {
+        if (this.estado != EstadoBono.BORRADOR) {
+            throw new IllegalStateException("Solo se pueden activar bonos en estado borrador");
+        }
+        this.estado = EstadoBono.ACTIVO;
+        this.actualizadoEn = LocalDateTime.now();
+    }
+
+    // Metodo de conveniencia para saber que siempre usa metodo francés
     public String getMetodoAmortizacion() {
         return "Método Francés";
     }
+
+    public void actualizarDatosFinancieros(BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaVencimiento) {
+        // Validar los datos antes de actualizarlos
+        validarDatosFinancieros(valorNominal, valorComercial, fechaVencimiento);
+
+        // Actualizar los campos del bono
+        this.valorNominal = valorNominal;
+        this.valorComercial = valorComercial;
+        this.fechaVencimiento = fechaVencimiento;
+
+        // Puedes agregar un control de cambios aquí si es necesario
+        this.actualizadoEn = LocalDateTime.now();
+    }
+
+    public void actualizarTasas(BigDecimal tasaInteres, Periodicidad periodicidadInteres, BigDecimal cok, Periodicidad periodicidadCok) {
+        // Validar las tasas antes de actualizarlas
+        validarTasas(new Tasa(tasaInteres, periodicidadInteres), new Tasa(cok, periodicidadCok));
+
+        // Actualizar las tasas
+        this.tasaInteres = new Tasa(tasaInteres, periodicidadInteres);
+        this.cok = new Tasa(cok, periodicidadCok);
+
+        // Puedes agregar un control de cambios aquí si es necesario
+        this.actualizadoEn = LocalDateTime.now();
+    }
+
+    public void actualizarPeriodosGracia(Integer periodosGraciaTotal, Integer periodosGraciaParcial) {
+        // Validar los periodos de gracia antes de actualizarlos
+        if (periodosGraciaTotal < 0 || periodosGraciaParcial < 0 || periodosGraciaParcial > periodosGraciaTotal) {
+            throw new IllegalArgumentException("Los períodos de gracia no son válidos");
+        }
+
+        // Actualizar los períodos de gracia
+        this.gracia = new PeriodosGracia(periodosGraciaTotal, periodosGraciaParcial);
+
+        // Puedes agregar un control de cambios aquí si es necesario
+        this.actualizadoEn = LocalDateTime.now();
+    }
+
 
 }
