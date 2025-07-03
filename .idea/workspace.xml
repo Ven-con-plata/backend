@@ -5,16 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b400f901-603c-41a2-ab96-003446be8858" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/aggregates/Bono.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/BeneficioInversion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInicialesDeudor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInversion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/GastosPeriodicosDeudor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Moneda.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Periodicidad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/PeriodosGracia.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Tasa.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/entities/CashFlowSchedule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CashFlowEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/IndicadoresEmisor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/IndicadoresInversor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/RolSchedule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/TipoEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/aggregates/Bono.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/aggregates/Bono.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/BeneficioInversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/BeneficioInversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInicialesDeudor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInicialesDeudor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/CostesInversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/GastosPeriodicosDeudor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/GastosPeriodicosDeudor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Periodicidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Periodicidad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/PeriodosGracia.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/PeriodosGracia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Tasa.java" beforeDir="false" afterPath="$PROJECT_DIR$/ven-con-plata-backend/src/main/java/com/upc/ven_con_plata_backend/estimating/domain/model/valueobjects/Tasa.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +147,7 @@
       <workItem from="1750809643333" duration="72000" />
       <workItem from="1750809736241" duration="17851000" />
       <workItem from="1751075379123" duration="3947000" />
-      <workItem from="1751261047457" duration="13240000" />
+      <workItem from="1751261047457" duration="26723000" />
     </task>
     <servers />
   </component>

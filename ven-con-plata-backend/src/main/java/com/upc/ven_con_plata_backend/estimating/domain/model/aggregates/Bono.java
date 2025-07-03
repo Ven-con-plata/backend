@@ -1,5 +1,6 @@
 package com.upc.ven_con_plata_backend.estimating.domain.model.aggregates;
 
+import com.upc.ven_con_plata_backend.estimating.domain.model.entities.CashFlowSchedule;
 import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.*;
 import com.upc.ven_con_plata_backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
@@ -9,8 +10,12 @@ import lombok.Setter;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,10 +28,10 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
 
     private Moneda moneda;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal valorNominal;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal valorComercial;
 
     @Column(nullable = false)
@@ -37,7 +42,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
 
     @LastModifiedDate
     @Column(nullable = false)
-    private BigDecimal actualizadoEn;
+    private LocalDateTime actualizadoEn;
 
     @Column(nullable = false)
     private int plazoEnAnios;
@@ -46,18 +51,16 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "valor", column = @Column(name = "interes_valor")),
-            @AttributeOverride(name = "unidad", column = @Column(name = "interes_unidad"))
+            @AttributeOverride(name = "valor", column = @Column(name = "interes_valor", nullable = false)),
+            @AttributeOverride(name = "unidad", column = @Column(name = "interes_unidad", nullable = false))
     })
-    @Column(nullable = false)
     private Tasa tasaInteres;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "valor", column = @Column(name = "cok_valor")),
-            @AttributeOverride(name = "unidad", column = @Column(name = "cok_unidad"))
+            @AttributeOverride(name = "valor", column = @Column(name = "cok_valor", nullable = false)),
+            @AttributeOverride(name = "unidad", column = @Column(name = "cok_unidad", nullable = false))
     })
-    @Column(nullable = false)
     private Tasa cok;
 
     @Embedded
@@ -75,19 +78,28 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     @Embedded
     private GastosPeriodicosDeudor gastosPeriodicosDeudor;
 
+    // Relación con los cronogramas (emisor e inversor)
+    @OneToMany(mappedBy = "bono", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CashFlowSchedule> cronogramas = new ArrayList<>();
+
     protected Bono() {}
 
-    public Bono(Moneda moneda, BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaEmision,
-                LocalDate fechaVencimiento, BigDecimal actualizadoEn, int plazoEnAnios, Periodicidad frecuenciaPago,
-                Tasa tasaInteres, Tasa cok, PeriodosGracia gracia, CostesInversion costesInversion,
+    public Bono(Moneda moneda, BigDecimal valorNominal, BigDecimal valorComercial,
+                LocalDate fechaEmision, LocalDate fechaVencimiento, Integer plazoEnAnios,
+                Periodicidad frecuenciaPago, Tasa tasaInteres, Tasa cok,
+                PeriodosGracia gracia, CostesInversion costesInversion,
                 BeneficioInversion beneficioInversion, CostesInicialesDeudor costesInicialesDeudor,
                 GastosPeriodicosDeudor gastosPeriodicosDeudor) {
+
+        validarDatosBasicos(valorNominal, valorComercial, fechaEmision, fechaVencimiento);
+        validarTasas(tasaInteres, cok);
+
         this.moneda = moneda;
         this.valorNominal = valorNominal;
         this.valorComercial = valorComercial;
         this.fechaEmision = fechaEmision;
         this.fechaVencimiento = fechaVencimiento;
-        this.actualizadoEn = actualizadoEn;
+        this.actualizadoEn = LocalDateTime.now();
         this.plazoEnAnios = plazoEnAnios;
         this.frecuenciaPago = frecuenciaPago;
         this.tasaInteres = tasaInteres;
@@ -99,20 +111,189 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.gastosPeriodicosDeudor = gastosPeriodicosDeudor;
     }
 
+    public void generarCronogramas() {
+        if (!cronogramas.isEmpty()) {
+            cronogramas.clear();
+        }
+
+        // Generar cronograma para emisor
+        CashFlowSchedule cronogramaEmisor = new CashFlowSchedule(this, RolSchedule.EMISOR);
+        generarEntriesParaEmisor(cronogramaEmisor);
+        cronogramas.add(cronogramaEmisor);
+
+        // Generar cronograma para inversor
+        CashFlowSchedule cronogramaInversor = new CashFlowSchedule(this, RolSchedule.INVERSOR);
+        generarEntriesParaInversor(cronogramaInversor);
+        cronogramas.add(cronogramaInversor);
+
+        this.actualizadoEn = LocalDateTime.now();
+    }
+
+    private void generarEntriesParaEmisor(CashFlowSchedule cronograma) {
+        // Flujo inicial: ingreso por emisión (positivo para emisor)
+        cronograma.agregarEntry(new CashFlowEntry(
+                fechaEmision,
+                valorNominal.subtract(costesInversion.calcularTotal(valorNominal)),
+                TipoEntry.COSTE_INICIAL
+        ));
+
+        // Generar flujos usando metodo francés
+        generarFlujosFrances(cronograma, true); // true = perspectiva emisor
+    }
+
+    private void generarEntriesParaInversor(CashFlowSchedule cronograma) {
+        // Flujo inicial: egreso por compra (negativo para inversor)
+        cronograma.agregarEntry(new CashFlowEntry(
+                fechaEmision,
+                valorComercial.negate(),
+                TipoEntry.COSTE_INICIAL
+        ));
+
+        // Generar flujos usando metodo francés
+        generarFlujosFrances(cronograma, false); // false = perspectiva inversor
+    }
+
+    private void generarFlujosFrances(CashFlowSchedule cronograma, boolean esEmisor) {
+        int periodos = calcularPeriodosTotales();
+        BigDecimal tasaPeriodica = calcularTasaPeriodica();
+        BigDecimal cuotaConstante = calcularCuotaConstante(tasaPeriodica, periodos);
+        BigDecimal saldoCapital = valorNominal;
+        LocalDate fechaPago = fechaEmision.plusMonths(frecuenciaPago.getMesesEntrePagos());
+
+        for (int periodo = 1; periodo <= periodos; periodo++) {
+            BigDecimal interes = saldoCapital.multiply(tasaPeriodica);
+            BigDecimal amortizacion = cuotaConstante.subtract(interes);
+
+            // Aplicar período de gracia
+            if (periodo <= gracia.getTotal()) {
+                if (periodo <= gracia.getParcial()) {
+                    // Gracia parcial: solo se pagan intereses
+                    amortizacion = BigDecimal.ZERO;
+                } else {
+                    // Gracia total: no se paga nada
+                    interes = BigDecimal.ZERO;
+                    amortizacion = BigDecimal.ZERO;
+                }
+            }
+
+            saldoCapital = saldoCapital.subtract(amortizacion);
+
+            // Agregar entries según perspectiva
+            if (interes.compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal montoInteres = esEmisor ? interes.negate() : interes;
+                cronograma.agregarEntry(new CashFlowEntry(fechaPago, montoInteres, TipoEntry.CUPON));
+            }
+
+            if (amortizacion.compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal montoAmortizacion = esEmisor ? amortizacion.negate() : amortizacion;
+                cronograma.agregarEntry(new CashFlowEntry(fechaPago, montoAmortizacion, TipoEntry.AMORTIZACION));
+            }
+
+            // Agregar gastos periódicos para el emisor
+            if (esEmisor) {
+                BigDecimal gastosPeriodicosTotal = gastosPeriodicosDeudor.calcularTotal(valorNominal, periodo);
+                if (gastosPeriodicosTotal.compareTo(BigDecimal.ZERO) > 0) {
+                    cronograma.agregarEntry(new CashFlowEntry(fechaPago, gastosPeriodicosTotal.negate(), TipoEntry.GASTO_PERIODICO));
+                }
+            }
+
+            fechaPago = fechaPago.plusMonths(frecuenciaPago.getMesesEntrePagos());
+        }
+
+        // Beneficio al vencimiento para el inversor
+        if (!esEmisor && beneficioInversion.getPrimaVencimiento().compareTo(BigDecimal.ZERO) > 0) {
+            cronograma.agregarEntry(new CashFlowEntry(
+                    fechaVencimiento,
+                    beneficioInversion.getPrimaVencimiento(),
+                    TipoEntry.BENEFICIO_VENCIMIENTO
+            ));
+        }
+    }
+
+    // Métodos auxiliares
+    private void validarDatosBasicos(BigDecimal valorNominal, BigDecimal valorComercial,
+                                     LocalDate fechaEmision, LocalDate fechaVencimiento) {
+        if (valorNominal == null || valorNominal.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El valor nominal debe ser mayor a cero");
+        }
+        if (valorComercial == null || valorComercial.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El valor comercial debe ser mayor a cero");
+        }
+        if (fechaEmision == null || fechaVencimiento == null) {
+            throw new IllegalArgumentException("Las fechas no pueden ser nulas");
+        }
+        if (fechaVencimiento.isBefore(fechaEmision)) {
+            throw new IllegalArgumentException("La fecha de vencimiento debe ser posterior a la emisión");
+        }
+    }
+
+    private void validarTasas(Tasa tasaInteres, Tasa cok) {
+        if (tasaInteres == null || cok == null) {
+            throw new IllegalArgumentException("Las tasas no pueden ser nulas");
+        }
+    }
+
     public boolean estaVencido() {
         return LocalDate.now().isAfter(this.fechaVencimiento);
     }
+
 
     public int calcularPeriodosTotales() {
         long mesesTotales = ChronoUnit.MONTHS.between(fechaEmision, fechaVencimiento);
         return switch (frecuenciaPago) {
             case MENSUAL -> (int) mesesTotales;
+            case BIMESTRAL -> (int) (mesesTotales / 2);
             case TRIMESTRAL -> (int) (mesesTotales / 3);
             case SEMESTRAL -> (int) (mesesTotales / 6);
             case ANUAL -> (int) (mesesTotales / 12);
-            case BIMESTRAL -> (int) (mesesTotales / 2);
             case QUINCENAL -> (int) (mesesTotales * 2);
         };
+    }
+
+    public BigDecimal calcularTasaPeriodica() {
+        BigDecimal tasaAnual = tasaInteres.getValor();
+        return switch (frecuenciaPago) {
+            case ANUAL -> tasaAnual;
+            case SEMESTRAL -> tasaAnual.divide(BigDecimal.valueOf(2), 10, RoundingMode.HALF_UP);
+            case TRIMESTRAL -> tasaAnual.divide(BigDecimal.valueOf(4), 10, RoundingMode.HALF_UP);
+            case BIMESTRAL -> tasaAnual.divide(BigDecimal.valueOf(6), 10, RoundingMode.HALF_UP);
+            case MENSUAL -> tasaAnual.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP);
+            case QUINCENAL -> tasaAnual.divide(BigDecimal.valueOf(24), 10, RoundingMode.HALF_UP);
+        };
+    }
+
+    private BigDecimal calcularCuotaConstante(BigDecimal tasaPeriodica, int periodos) {
+        if (tasaPeriodica.compareTo(BigDecimal.ZERO) == 0) {
+            return valorNominal.divide(BigDecimal.valueOf(periodos), 2, RoundingMode.HALF_UP);
+        }
+
+        BigDecimal factor = BigDecimal.ONE.add(tasaPeriodica).pow(periodos);
+        return valorNominal.multiply(tasaPeriodica).multiply(factor)
+                .divide(factor.subtract(BigDecimal.ONE), 2, RoundingMode.HALF_UP);
+    }
+
+    // Getters
+    public List<CashFlowSchedule> getCronogramas() {
+        return new ArrayList<>(cronogramas);
+    }
+
+    public CashFlowSchedule getCronogramaEmisor() {
+        return cronogramas.stream()
+                .filter(c -> c.getRol() == RolSchedule.EMISOR)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public CashFlowSchedule getCronogramaInversor() {
+        return cronogramas.stream()
+                .filter(c -> c.getRol() == RolSchedule.INVERSOR)
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Metodo de conveniencia para saber que siempre usa método francés
+    public String getMetodoAmortizacion() {
+        return "Método Francés";
     }
 
 }
