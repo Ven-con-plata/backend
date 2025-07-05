@@ -18,15 +18,25 @@ import java.util.Objects;
 public class CashFlowEntry {
 
     @Column(nullable = false)
-    private LocalDate fecha;
+    private int periodo;
 
-    @Column(nullable = false, precision = 15, scale = 2)
-    private BigDecimal monto;
+    @Column(nullable = false)
+    private LocalDate fecha_vencimiento;
+
+    @Column(nullable = false)
+    private Double amortizacion;
+
+    @Column(nullable = false)
+    private Double interes;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false)
     private TipoEntry tipo;
 
+    @Column (nullable = false)
+    private Double cuota_total;
+
+    /*
     public CashFlowEntry(LocalDate fecha, BigDecimal monto, TipoEntry tipo) {
         validarDatos(fecha, monto, tipo);
         this.fecha = fecha;
@@ -81,5 +91,5 @@ public class CashFlowEntry {
     public String toString() {
         return String.format("CashFlowEntry{fecha=%s, monto=%s, tipo=%s}",
                 fecha, monto, tipo);
-    }
+    }*/
 }

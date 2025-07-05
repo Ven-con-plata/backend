@@ -4,22 +4,20 @@ import lombok.Getter;
 
 @Getter
 public enum Periodicidad {
-    ANUAL(1, 12),
-    SEMESTRAL(2, 6),
-    TRIMESTRAL(4, 3),
-    BIMESTRAL(6, 2),
-    MENSUAL(12, 1),
-    QUINCENAL(24, 0.5);
+    ANUAL(12),
+    SEMESTRAL(6),
+    CUATRIMESTRAL(4),
+    TRIMESTRAL(3),
+    MENSUAL(1);
 
-    private final int periodosPorAno;
-    private final double mesesEntrePagos;
+    private final int meses;
 
-    Periodicidad(int periodosPorAno, double mesesEntrePagos) {
-        this.periodosPorAno = periodosPorAno;
-        this.mesesEntrePagos = mesesEntrePagos;
+    Periodicidad(int meses) {
+        this.meses = meses;
     }
 
-    public int getMesesEntrePagos() {
-        return (int) Math.ceil(mesesEntrePagos);
+    /** Devuelve el número de meses que dura la periodicidad */
+    public int getMeses() {
+        return meses;
     }
 }

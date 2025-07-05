@@ -1,13 +1,13 @@
 package com.upc.ven_con_plata_backend.estimating.domain.model.commands;
 
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.Moneda;
+import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.Currency;
 import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.Periodicidad;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record CreateBonoCommand(
-        Moneda moneda,
+        Currency currency,
         BigDecimal valorNominal,
         BigDecimal valorComercial,
         LocalDate fechaEmision,

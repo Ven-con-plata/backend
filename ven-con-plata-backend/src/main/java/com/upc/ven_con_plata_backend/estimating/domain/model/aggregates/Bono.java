@@ -7,13 +7,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +22,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Moneda moneda;
+    private Currency currency;
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal valorNominal;
@@ -40,13 +36,10 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     @Column(nullable = false)
     private LocalDate fechaVencimiento;
 
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime actualizadoEn;
-
     @Column(nullable = false)
     private int plazoEnAnios;
 
+    @Enumerated(EnumType.STRING)
     private Periodicidad frecuenciaPago;
 
     @Embedded
@@ -86,7 +79,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
 
     protected Bono() {}
 
-    public Bono(Moneda moneda, BigDecimal valorNominal, BigDecimal valorComercial,
+    /*public Bono(Moneda moneda, BigDecimal valorNominal, BigDecimal valorComercial,
                 LocalDate fechaEmision, LocalDate fechaVencimiento, Integer plazoEnAnios,
                 Periodicidad frecuenciaPago, Tasa tasaInteres, Tasa cok,
                 PeriodosGracia gracia, CostesInversion costesInversion,
@@ -101,7 +94,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.valorComercial = valorComercial;
         this.fechaEmision = fechaEmision;
         this.fechaVencimiento = fechaVencimiento;
-        this.actualizadoEn = LocalDateTime.now();
         this.plazoEnAnios = plazoEnAnios;
         this.frecuenciaPago = frecuenciaPago;
         this.tasaInteres = tasaInteres;
@@ -112,7 +104,8 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.costesInicialesDeudor = costesInicialesDeudor;
         this.gastosPeriodicosDeudor = gastosPeriodicosDeudor;
     }
-
+    */
+    /*
     public void generarCronogramas() {
         if (!cronogramas.isEmpty()) {
             cronogramas.clear();
@@ -128,7 +121,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         generarEntriesParaInversor(cronogramaInversor);
         cronogramas.add(cronogramaInversor);
 
-        this.actualizadoEn = LocalDateTime.now();
     }
 
     private void generarEntriesParaEmisor(CashFlowSchedule cronograma) {
@@ -212,8 +204,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         }
     }
 
-    private void validarDatosBasicos(BigDecimal valorNominal, BigDecimal valorComercial,
-                                     LocalDate fechaEmision, LocalDate fechaVencimiento) {
+    private void validarDatosBasicos(BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaEmision, LocalDate fechaVencimiento) {
         if (valorNominal == null || valorNominal.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El valor nominal debe ser mayor a cero");
         }
@@ -272,7 +263,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     public boolean estaVencido() {
         return LocalDate.now().isAfter(this.fechaVencimiento);
     }
-
 
     public int calcularPeriodosTotales() {
         long mesesTotales = ChronoUnit.MONTHS.between(fechaEmision, fechaVencimiento);
@@ -340,7 +330,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
             throw new IllegalStateException("Solo se pueden activar bonos en estado borrador");
         }
         this.estado = EstadoBono.ACTIVO;
-        this.actualizadoEn = LocalDateTime.now();
     }
 
     // Metodo de conveniencia para saber que siempre usa metodo francés
@@ -358,7 +347,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.fechaVencimiento = fechaVencimiento;
 
         // Puedes agregar un control de cambios aquí si es necesario
-        this.actualizadoEn = LocalDateTime.now();
     }
 
     public void actualizarTasas(BigDecimal tasaInteres, Periodicidad periodicidadInteres, BigDecimal cok, Periodicidad periodicidadCok) {
@@ -370,7 +358,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.cok = new Tasa(cok, periodicidadCok);
 
         // Puedes agregar un control de cambios aquí si es necesario
-        this.actualizadoEn = LocalDateTime.now();
     }
 
     public void actualizarPeriodosGracia(Integer periodosGraciaTotal, Integer periodosGraciaParcial) {
@@ -383,8 +370,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.gracia = new PeriodosGracia(periodosGraciaTotal, periodosGraciaParcial);
 
         // Puedes agregar un control de cambios aquí si es necesario
-        this.actualizadoEn = LocalDateTime.now();
     }
 
-
+*/
 }

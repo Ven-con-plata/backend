@@ -1,10 +1,7 @@
 package com.upc.ven_con_plata_backend.estimating.domain.model.entities;
 
 import com.upc.ven_con_plata_backend.estimating.domain.model.aggregates.Bono;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.CashFlowEntry;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.IndicadoresEmisor;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.IndicadoresInversor;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.RolSchedule;
+import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.*;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,31 +29,19 @@ public class CashFlowSchedule {
 
     @ElementCollection
     @CollectionTable(
-            name = "cf_entries",
+            name = "entries",
             joinColumns = @JoinColumn(name = "schedule_id")
     )
     private List<CashFlowEntry> entries = new ArrayList<>();
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "van", column = @Column(name = "emisor_van")),
-            @AttributeOverride(name = "tir", column = @Column(name = "emisor_tir")),
-            @AttributeOverride(name = "tcea", column = @Column(name = "emisor_tcea"))
-    })
-    private IndicadoresEmisor indicadoresEmisor;
+    @ElementCollection
+    @CollectionTable(
+            name= "indicadores",
+            joinColumns = @JoinColumn(name = "indicator_id")
+    )
+    private List<Indicator> indicadores = new ArrayList<>();
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "van", column = @Column(name = "invesor_van")),
-            @AttributeOverride(name = "tir", column = @Column(name = "invesor_tir")),
-            @AttributeOverride(name = "precioBono", column = @Column(name = "invesor_precio")),
-            @AttributeOverride(name = "trea", column = @Column(name = "invesor_trea")),
-            @AttributeOverride(name = "duracion", column = @Column(name = "invesor_duracion")),
-            @AttributeOverride(name = "duracionModificada", column = @Column(name = "invesor_duracion_mod")),
-            @AttributeOverride(name = "convexidad", column = @Column(name = "invesor_convexidad"))
-    })
-    private IndicadoresInversor indicadoresInversor;
-
+    /*
     public CashFlowSchedule(Bono bono, RolSchedule rol) {
         this.bono = bono;
         this.rol = rol;
@@ -89,4 +74,6 @@ public class CashFlowSchedule {
     public boolean esInversor() {
         return rol == RolSchedule.INVERSOR;
     }
+
+     */
 }

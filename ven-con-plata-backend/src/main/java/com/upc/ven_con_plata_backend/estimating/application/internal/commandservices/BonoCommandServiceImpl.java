@@ -40,7 +40,7 @@ public class BonoCommandServiceImpl implements BonoCommandService {
 
         // Crear aggregate
         Bono bono = new Bono(
-                command.moneda(), command.valorNominal(), command.valorComercial(),
+                command.currency(), command.valorNominal(), command.valorComercial(),
                 command.fechaEmision(), command.fechaVencimiento(), command.plazoEnAnios(),
                 command.frecuenciaPago(), tasaInteres, cok, gracia, costesInversion,
                 beneficioInversion, costesIniciales, gastosPeriodicosDeudor

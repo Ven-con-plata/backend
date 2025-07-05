@@ -1,7 +1,7 @@
 package com.upc.ven_con_plata_backend.estimating.interfaces.rest.transform;
 
 import com.upc.ven_con_plata_backend.estimating.domain.model.commands.CreateBonoCommand;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.Moneda;
+import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.Currency;
 import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.Periodicidad;
 import com.upc.ven_con_plata_backend.estimating.interfaces.rest.resources.CreateBonoResource;
 
@@ -9,7 +9,7 @@ public class CreateBonoCommandFromResourceAssembler {
 
     public static CreateBonoCommand toCommandFromResource(CreateBonoResource resource) {
         return new CreateBonoCommand(
-                Moneda.valueOf(resource.moneda()),
+                Currency.valueOf(resource.moneda()),
                 resource.valorNominal(),
                 resource.valorComercial(),
                 resource.fechaEmision(),

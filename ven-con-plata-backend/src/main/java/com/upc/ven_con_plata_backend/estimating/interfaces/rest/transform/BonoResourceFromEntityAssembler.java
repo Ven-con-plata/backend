@@ -15,7 +15,7 @@ public class BonoResourceFromEntityAssembler {
 
         return new BonoResource(
                 entity.getId(),
-                entity.getMoneda().name(),
+                entity.getCurrency().name(),
                 entity.getValorNominal(),
                 entity.getValorComercial(),
                 entity.getFechaEmision(),
