@@ -7,11 +7,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record CreateBonoCommand(
-        Currency currency,
+        String moneda,
         BigDecimal valorNominal,
         BigDecimal valorComercial,
-        LocalDate fechaEmision,
-        LocalDate fechaVencimiento,
         Integer plazoEnAnios,
         Periodicidad frecuenciaPago,
         BigDecimal tasaInteres,

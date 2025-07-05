@@ -1,5 +1,6 @@
 package com.upc.ven_con_plata_backend.estimating.domain.model.aggregates;
 
+import com.upc.ven_con_plata_backend.estimating.domain.model.commands.CreateBonoCommand;
 import com.upc.ven_con_plata_backend.estimating.domain.model.entities.CashFlowSchedule;
 import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.*;
 import com.upc.ven_con_plata_backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
@@ -23,7 +24,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     private Long id;
 
     @Column(nullable = false)
-    private Currency currency;
+    private Currency moneda;
 
 
     @Column(nullable = false, precision = 15, scale = 2)
@@ -78,147 +79,68 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
 
     protected Bono() {}
 
-    public Bono() {
+    public Bono(CreateBonoCommand cmd) {
 
-        validarDatosBasicos(valorNominal, valorComercial, fechaEmision, fechaVencimiento);
-        validarTasas(tasaInteres, cok);
+        validarDatosBasicos(cmd.valorNominal(), cmd.valorComercial());
+        validarTasas(cmd.tasaInteres(), cmd.cok());
 
-        this.moneda = moneda;
-        this.valorNominal = valorNominal;
-        this.valorComercial = valorComercial;
-        this.fechaEmision = fechaEmision;
-        this.fechaVencimiento = fechaVencimiento;
-        this.plazoEnAnios = plazoEnAnios;
-        this.frecuenciaPago = frecuenciaPago;
-        this.tasaInteres = tasaInteres;
-        this.cok = cok;
-        this.gracia = gracia;
-        this.costesInversion = costesInversion;
-        this.beneficioInversion = beneficioInversion;
-        this.costesInicialesDeudor = costesInicialesDeudor;
-        this.gastosPeriodicosDeudor = gastosPeriodicosDeudor;
-    }
-    */
-    /*
-    public void generarCronogramas() {
-        if (!cronogramas.isEmpty()) {
-            cronogramas.clear();
-        }
+        this.moneda = Currency.valueOf(cmd.moneda());
+        this.valorNominal = cmd.valorNominal();
+        this.valorComercial = cmd.valorComercial();
+        this.plazoEnAnios = cmd.plazoEnAnios();
+        // periocidad
+        this.frecuenciaPago = cmd.frecuenciaPago();
+        // periocidad interes
+        this.tasaInteres = new Tasa(cmd.tasaInteres(), cmd.periodicidadInteres());
+        // periocidad cok
+        this.cok = new Tasa(cmd.cok(), cmd.periodicidadCok());
 
-        // Generar cronograma para emisor
-        CashFlowSchedule cronogramaEmisor = new CashFlowSchedule(this, RolSchedule.EMISOR);
-        generarEntriesParaEmisor(cronogramaEmisor);
-        cronogramas.add(cronogramaEmisor);
+        this.gracia = new PeriodosGracia(cmd.periodosGraciaTotal(), cmd.periodosGraciaParcial());
 
-        // Generar cronograma para inversor
-        CashFlowSchedule cronogramaInversor = new CashFlowSchedule(this, RolSchedule.INVERSOR);
-        generarEntriesParaInversor(cronogramaInversor);
-        cronogramas.add(cronogramaInversor);
 
+        this.costesInversion = new CostesInversion(cmd.costeFlotacion(), cmd.costeCavali());
+        this.beneficioInversion = new BeneficioInversion(cmd.primaVencimiento());
+        this.costesInicialesDeudor = new CostesInicialesDeudor(cmd.costesNotariales(),cmd.costesRegistrales(), cmd.costesTasacion(), cmd.comisionEstudio(),cmd.comisionActivacion());
+        this.gastosPeriodicosDeudor = new GastosPeriodicosDeudor(cmd.seguroDesgravamen(), cmd.seguroRiesgo(), cmd.comisionPeriodica(), cmd.portes(), cmd.gastosAdministrativos());
+
+        //calcular vencimiento
+        this.fechaVencimiento = LocalDate.now().plusYears(plazoEnAnios);
+
+        // Genera en cascada los dos cronogramas (Emisor e Inversor)
+        this.generarCashflowEIndicadores();
     }
 
-    private void generarEntriesParaEmisor(CashFlowSchedule cronograma) {
-        // Flujo inicial: ingreso por emisión (positivo para emisor)
-        cronograma.agregarEntry(new CashFlowEntry(
-                fechaEmision,
-                valorNominal.subtract(costesInversion.calcularTotal(valorNominal)),
-                TipoEntry.COSTE_INICIAL
-        ));
-
-        // Generar flujos usando metodo francés
-        generarFlujosFrances(cronograma, true); // true = perspectiva emisor
-    }
-
-    private void generarEntriesParaInversor(CashFlowSchedule cronograma) {
-        // Flujo inicial: egreso por compra (negativo para inversor)
-        cronograma.agregarEntry(new CashFlowEntry(
-                fechaEmision,
-                valorComercial.negate(),
-                TipoEntry.COSTE_INICIAL
-        ));
-
-        // Generar flujos usando metodo francés
-        generarFlujosFrances(cronograma, false); // false = perspectiva inversor
-    }
-
-    private void generarFlujosFrances(CashFlowSchedule cronograma, boolean esEmisor) {
-        int periodos = calcularPeriodosTotales();
-        BigDecimal tasaPeriodica = calcularTasaPeriodica();
-        BigDecimal cuotaConstante = calcularCuotaConstante(tasaPeriodica, periodos);
-        BigDecimal saldoCapital = valorNominal;
-        LocalDate fechaPago = fechaEmision.plusMonths(frecuenciaPago.getMesesEntrePagos());
-
-        for (int periodo = 1; periodo <= periodos; periodo++) {
-            BigDecimal interes = saldoCapital.multiply(tasaPeriodica);
-            BigDecimal amortizacion = cuotaConstante.subtract(interes);
-
-            // Aplicar período de gracia
-            if (periodo <= gracia.getTotal()) {
-                if (periodo <= gracia.getParcial()) {
-                    // Gracia parcial: solo se pagan intereses
-                    amortizacion = BigDecimal.ZERO;
-                } else {
-                    // Gracia total: no se paga nada
-                    interes = BigDecimal.ZERO;
-                    amortizacion = BigDecimal.ZERO;
-                }
-            }
-
-            saldoCapital = saldoCapital.subtract(amortizacion);
-
-            // Agregar entries según perspectiva
-            if (interes.compareTo(BigDecimal.ZERO) > 0) {
-                BigDecimal montoInteres = esEmisor ? interes.negate() : interes;
-                cronograma.agregarEntry(new CashFlowEntry(fechaPago, montoInteres, TipoEntry.CUPON));
-            }
-
-            if (amortizacion.compareTo(BigDecimal.ZERO) > 0) {
-                BigDecimal montoAmortizacion = esEmisor ? amortizacion.negate() : amortizacion;
-                cronograma.agregarEntry(new CashFlowEntry(fechaPago, montoAmortizacion, TipoEntry.AMORTIZACION));
-            }
-
-            // Agregar gastos periódicos para el emisor
-            if (esEmisor) {
-                BigDecimal gastosPeriodicosTotal = gastosPeriodicosDeudor.calcularTotal(valorNominal, periodo);
-                if (gastosPeriodicosTotal.compareTo(BigDecimal.ZERO) > 0) {
-                    cronograma.agregarEntry(new CashFlowEntry(fechaPago, gastosPeriodicosTotal.negate(), TipoEntry.GASTO_PERIODICO));
-                }
-            }
-
-            fechaPago = fechaPago.plusMonths(frecuenciaPago.getMesesEntrePagos());
-        }
-
-        // Beneficio al vencimiento para el inversor
-        if (!esEmisor && beneficioInversion.getPrimaVencimiento().compareTo(BigDecimal.ZERO) > 0) {
-            cronograma.agregarEntry(new CashFlowEntry(
-                    fechaVencimiento,
-                    beneficioInversion.getPrimaVencimiento(),
-                    TipoEntry.BENEFICIO_VENCIMIENTO
-            ));
-        }
-    }
-
-    private void validarDatosBasicos(BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaEmision, LocalDate fechaVencimiento) {
+    private void validarDatosBasicos(BigDecimal valorNominal, BigDecimal valorComercial) {
         if (valorNominal == null || valorNominal.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El valor nominal debe ser mayor a cero");
         }
         if (valorComercial == null || valorComercial.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El valor comercial debe ser mayor a cero");
         }
-        if (fechaEmision == null || fechaVencimiento == null) {
-            throw new IllegalArgumentException("Las fechas no pueden ser nulas");
-        }
-        if (fechaVencimiento.isBefore(fechaEmision)) {
-            throw new IllegalArgumentException("La fecha de vencimiento debe ser posterior a la emisión");
-        }
     }
 
-    private void validarTasas(Tasa tasaInteres, Tasa cok) {
+    private void validarTasas(BigDecimal tasaInteres, BigDecimal cok) {
         if (tasaInteres == null || cok == null) {
             throw new IllegalArgumentException("Las tasas no pueden ser nulas");
         }
     }
 
+
+    public void generarCashflowEIndicadores() {
+        if (!this.cronogramas.isEmpty()) {
+            this.cronogramas.clear();
+        }
+        // Generar cronograma para emisor
+        CashFlowSchedule cashFlowScheduleEmisor = new CashFlowSchedule(this, RolSchedule.EMISOR);
+        this.cronogramas.add(
+                cashFlowScheduleEmisor
+        );
+        // Generar cronograma para inversor
+        /*this.cronogramas.add(
+                CashFlowSchedule.crearPara(this, RolSchedule.INVERSOR)
+        );*/
+    }
+/*
     private void validarPuedeSerModificado() {
         if (this.estado != EstadoBono.BORRADOR) {
             throw new IllegalStateException(

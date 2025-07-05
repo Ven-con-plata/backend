@@ -6,5 +6,4 @@ public enum TipoEntry {
     GASTO_PERIODICO,
     COSTE_INICIAL,
     BENEFICIO_VENCIMIENTO,
-
 }

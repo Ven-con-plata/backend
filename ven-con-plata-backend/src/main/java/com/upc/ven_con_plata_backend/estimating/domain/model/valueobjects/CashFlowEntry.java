@@ -21,7 +21,7 @@ public class CashFlowEntry {
     private int periodo;
 
     @Column(nullable = false)
-    private LocalDate fecha_pago;
+    private LocalDate fechaPago;
 
     @Column(nullable = false)
     private Double amortizacion;
@@ -29,22 +29,24 @@ public class CashFlowEntry {
     @Column(nullable = false)
     private Double interes;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
-    private TipoEntry tipo;
-
     @Column (nullable = false)
-    private Double cuota_total;
+    private Double cuotaTotal;
 
+    @Column(nullable = false)
+    private Double saldoRestante;
 
-    public CashFlowEntry(int periodo, LocalDate fecha_pago, Double amortizacion, Double interes, String tipo, Double cuota_total) {
-        //validarDatos(fecha, monto, tipo);
+    public CashFlowEntry(int periodo, LocalDate fechaPago, Double amortizacion, Double interes, Double cuotaTotal, Double saldoRestante) {
+        if (periodo < 0) throw new IllegalArgumentException("Periodo < 0");
         this.periodo = periodo;
         this.amortizacion = amortizacion;
         this.interes = interes;
-        this.fecha_pago = fecha_pago;
-        this.cuota_total = cuota_total;
-        this.tipo = TipoEntry.valueOf(tipo.toUpperCase());
+        this.fechaPago = fechaPago;
+        this.cuotaTotal = cuotaTotal;
+        this.saldoRestante = saldoRestante;
+        // Evitamos saldo negativo:
+        this.saldoRestante  = saldoRestante < 0
+                ? 0
+                : saldoRestante;
     }
 
     private void validarDatos(LocalDate fecha, BigDecimal monto, TipoEntry tipo) {

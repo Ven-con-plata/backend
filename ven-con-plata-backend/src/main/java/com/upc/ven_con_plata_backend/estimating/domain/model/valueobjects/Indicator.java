@@ -20,4 +20,11 @@ public class Indicator {
     @Column(nullable=false, length=12)
     private Unidad unidad;
 
+    protected Indicator(){}
+
+    public Indicator(String nombre, BigDecimal valor, Unidad unidad) {
+        this.nombre = nombre;
+        this.valor = valor;
+        this.unidad = unidad;
+    }
 }

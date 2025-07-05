@@ -2,11 +2,13 @@ package com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Embeddable
+@Getter
 public class CostesInicialesDeudor {
 
     @Column(nullable = false, precision = 15, scale = 2)
@@ -49,27 +51,6 @@ public class CostesInicialesDeudor {
         BigDecimal total = notariales.add(registrales).add(tasacion)
                 .add(comisionEstudio).add(comisionActivacion);
 
-        // Si el total es menor a 1, asumimos que está en porcentaje
-        if (total.compareTo(BigDecimal.ONE) <= 0) {
-            return valorNominal.multiply(total);
-        }
-        return total;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        CostesInicialesDeudor that = (CostesInicialesDeudor) obj;
-        return Objects.equals(notariales, that.notariales) &&
-                Objects.equals(registrales, that.registrales) &&
-                Objects.equals(tasacion, that.tasacion) &&
-                Objects.equals(comisionEstudio, that.comisionEstudio) &&
-                Objects.equals(comisionActivacion, that.comisionActivacion);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(notariales, registrales, tasacion, comisionEstudio, comisionActivacion);
+        return valorNominal.subtract(total);
     }
 }

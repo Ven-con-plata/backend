@@ -2,12 +2,17 @@ package com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.util.Objects;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 @Embeddable
+@Getter
 public class GastosPeriodicosDeudor {
+
+    private static final MathContext MATH_CTX = new MathContext(10, RoundingMode.HALF_UP);
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal seguroDesgravamen;
@@ -36,32 +41,21 @@ public class GastosPeriodicosDeudor {
         this.gastosAdministrativos = gastosAdministrativos != null ? gastosAdministrativos : BigDecimal.ZERO;
     }
 
-    public BigDecimal calcularTotal(BigDecimal valorNominal, int periodo) {
-        BigDecimal total = seguroDesgravamen.add(seguroRiesgo)
-                .add(comisionPeriodica).add(portes)
-                .add(gastosAdministrativos);
+    public BigDecimal calcularTotal(BigDecimal saldoPrevio, BigDecimal valorComercial) {
+        // 2) Seguro de desgravamen: % sobre saldo pendiente
+        //    (asegúrate de que gp.getSeguroDesgravamen() esté en [0,1], p.ej. 0.005 = 0.5%)
+        BigDecimal seguroDesgravamen = saldoPrevio
+                .multiply(this.seguroDesgravamen.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP));
 
-        // Si el total es menor a 1, asumimos que está en porcentaje del valor nominal
-        if (total.compareTo(BigDecimal.ONE) <= 0) {
-            return valorNominal.multiply(total);
-        }
-        return total;
-    }
+        // 3) Seguro “contra todo riesgo”: % sobre el precio de venta del bien
+        //    Usamos valorComercial como precio de venta
+        BigDecimal seguroTodoRiesgo = valorComercial
+                .multiply(this.seguroRiesgo.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP));
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        GastosPeriodicosDeudor that = (GastosPeriodicosDeudor) obj;
-        return Objects.equals(seguroDesgravamen, that.seguroDesgravamen) &&
-                Objects.equals(seguroRiesgo, that.seguroRiesgo) &&
-                Objects.equals(comisionPeriodica, that.comisionPeriodica) &&
-                Objects.equals(portes, that.portes) &&
-                Objects.equals(gastosAdministrativos, that.gastosAdministrativos);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(seguroDesgravamen, seguroRiesgo, comisionPeriodica, portes, gastosAdministrativos);
+        return comisionPeriodica
+                .add(this.portes)
+                .add(this.gastosAdministrativos)
+                .add(seguroDesgravamen)
+                .add(seguroTodoRiesgo);
     }
 }

@@ -42,7 +42,7 @@ public class BonoController {
         var bonoResource = BonoResourceFromEntityAssembler.toResourceFromEntity(bono);
         return new ResponseEntity<>(bonoResource, HttpStatus.CREATED);
     }
-
+    /*
     @PutMapping("/{bonoId}")
     public ResponseEntity<BonoResource> updateBono(@PathVariable Long bonoId, @RequestBody UpdateBonoResource resource) {
         var updateBonoCommand = UpdateBonoCommandFromResourceAssembler.toCommandFromResource(bonoId, resource);
@@ -68,5 +68,5 @@ public class BonoController {
         var bono = bonoOptional.get();
         var bonoResource = BonoResourceFromEntityAssembler.toResourceFromEntity(bono);
         return ResponseEntity.ok(bonoResource);
-    }
+    }*/
 }
