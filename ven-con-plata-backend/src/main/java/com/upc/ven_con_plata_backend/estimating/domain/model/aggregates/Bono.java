@@ -88,7 +88,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.valorNominal = cmd.valorNominal();
         this.valorComercial = cmd.valorComercial();
         this.plazoEnAnios = cmd.plazoEnAnios();
-        // periocidad
+        // periocidad base
         this.frecuenciaPago = cmd.frecuenciaPago();
         // periocidad interes
         this.tasaInteres = new Tasa(cmd.tasaInteres(), cmd.periodicidadInteres());

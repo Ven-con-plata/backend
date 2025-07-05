@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class Indicator {
 
     @Column(nullable=false, length=50)
-    private String nombre;
+    private IndicatorName nombre;
 
     @Column(nullable=false, precision=18, scale=6)
     private BigDecimal valor;
@@ -22,9 +22,9 @@ public class Indicator {
 
     protected Indicator(){}
 
-    public Indicator(String nombre, BigDecimal valor, Unidad unidad) {
-        this.nombre = nombre;
+    public Indicator(String nombre, BigDecimal valor, String unidad) {
+        this.nombre = IndicatorName.valueOf(nombre);
         this.valor = valor;
-        this.unidad = unidad;
+        this.unidad = Unidad.valueOf(unidad);
     }
 }

@@ -1,90 +1,130 @@
 package com.upc.ven_con_plata_backend.estimating.domain.services;
 
 import com.upc.ven_con_plata_backend.estimating.domain.model.aggregates.Bono;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.CashFlowEntry;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.IndicadoresEmisor;
-import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.IndicadoresInversor;
+import com.upc.ven_con_plata_backend.estimating.domain.model.entities.CashFlowSchedule;
+import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 
-@Service
 public class CalculadoraFinancieraDomainService {
-    /*
     private static final int PRECISION = 10;
     private static final RoundingMode ROUNDING = RoundingMode.HALF_UP;
 
-    public IndicadoresEmisor calcularIndicadoresEmisor(Bono bono) {
+    public IndicadoresEmisor calcularIndicadoresEmisor(List<CashFlowEntry> cashFlowEntries, BigDecimal cok, Periodicidad frecuenciaPago) {
         // Calcular VAN, TIR y TCEA desde perspectiva del emisor
-        var cronogramaEmisor = bono.getCronogramaEmisor();
-        if (cronogramaEmisor == null) {
+        if (cashFlowEntries == null) {
             throw new IllegalStateException("El bono debe tener cronograma de emisor generado");
         }
+        BigDecimal precioBono = calcularPrecioBono(cashFlowEntries, cok);
+        BigDecimal van = calcularVAN(cashFlowEntries, precioBono);
+        // 1) TIR periódica en %
+        BigDecimal tir = calcularTIR(cashFlowEntries);
+        BigDecimal tcea = calcularTCEA(tir, frecuenciaPago);
 
-        BigDecimal van = calcularVAN(cronogramaEmisor.getEntries(), bono.getCok().getValor());
-        BigDecimal tir = calcularTIR(cronogramaEmisor.getEntries());
-        BigDecimal tcea = calcularTCEA(bono);
-
-        return new IndicadoresEmisor(van, tir, tcea);
+        return new IndicadoresEmisor(precioBono, van, tir, tcea);
     }
-
-    public IndicadoresInversor calcularIndicadoresInversor(Bono bono, BigDecimal tasaDescuento) {
+/*
+    public IndicadoresInversor calcularIndicadoresInversor(CashFlowSchedule cashFlowSchedule) {
         // Calcular todos los indicadores desde perspectiva del inversor
-        var cronogramaInversor = bono.getCronogramaInversor();
-        if (cronogramaInversor == null) {
+        if (cashFlowSchedule == null) {
             throw new IllegalStateException("El bono debe tener cronograma de inversor generado");
         }
 
-        BigDecimal van = calcularVAN(cronogramaInversor.getEntries(), tasaDescuento);
-        BigDecimal tir = calcularTIR(cronogramaInversor.getEntries());
-        BigDecimal precioBono = calcularPrecioBono(cronogramaInversor.getEntries(), tasaDescuento);
-        BigDecimal trea = calcularTREA(bono, tasaDescuento);
-        BigDecimal duracion = calcularDuracion(cronogramaInversor.getEntries(), tasaDescuento);
-        BigDecimal duracionModificada = calcularDuracionModificada(duracion, tasaDescuento);
-        BigDecimal convexidad = calcularConvexidad(cronogramaInversor.getEntries(), tasaDescuento);
+        BigDecimal van = calcularVAN();
+        BigDecimal tir = calcularTIR();
+        BigDecimal precioBono = calcularPrecioBono();
+        BigDecimal trea = calcularTREA();
+        BigDecimal duracion = calcularDuracion();
+        BigDecimal duracionModificada = calcularDuracionModificada();
+        BigDecimal convexidad = calcularConvexidad();
 
         return new IndicadoresInversor(van, tir, precioBono, trea, duracion, duracionModificada, convexidad);
     }
-
+*/
     // Métodos privados de cálculo
-    private BigDecimal calcularVAN(List<com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.CashFlowEntry> entries, BigDecimal tasaDescuento) {
-        // Implementación del cálculo de VAN
-        return BigDecimal.ZERO; // Placeholder
+    private BigDecimal calcularPrecioBono(List<CashFlowEntry> entries,
+                                          BigDecimal tasaPeriodica) {
+        BigDecimal precio = BigDecimal.ZERO;
+        MathContext mc = new MathContext(10, RoundingMode.HALF_UP);
+
+        for (CashFlowEntry e : entries) {
+            if (e.getPeriodo() == 0) continue;    // omitimos el flujo inicial
+            BigDecimal flujo = BigDecimal.valueOf(e.getCuotaTotal());
+            BigDecimal factor = BigDecimal.ONE
+                    .add(tasaPeriodica)
+                    .pow(e.getPeriodo(), mc);
+            precio = precio.add(
+                    flujo.divide(factor, 10, RoundingMode.HALF_UP)
+            );
+        }
+        return precio.setScale(2, RoundingMode.HALF_UP);
     }
 
-    private BigDecimal calcularTIR(List<com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.CashFlowEntry> entries) {
-        // Implementación del cálculo de TIR usando Newton-Raphson
-        return BigDecimal.ZERO; // Placeholder
+    private BigDecimal calcularVAN(List<CashFlowEntry> entries, BigDecimal precio) {
+        // Flujo inicial en t=0 (inversión neta al comprar el bono)
+        BigDecimal flujo0 = BigDecimal.valueOf(entries.get(0).getCuotaTotal());
+        return precio.subtract(flujo0)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
-    private BigDecimal calcularTCEA(Bono bono) {
-        // Implementación del cálculo de TCEA
-        return BigDecimal.ZERO; // Placeholder
+    private BigDecimal calcularTIR(List<CashFlowEntry> entries) {
+        // Construye el array de flujos (t=0 negativo, t>0 positivos)
+        double[] flujos = entries.stream()
+                .mapToDouble(e -> e.getPeriodo() == 0
+                        ? -e.getCuotaTotal()
+                        :  e.getCuotaTotal())
+                .toArray();
+
+        // Llama al método IRR que devuelve la tasa periódica en decimal
+        double irrDecimal = FinancialCalculator.irr(flujos);
+
+        // Lo convierte a porcentaje con 4 decimales
+        return BigDecimal.valueOf(irrDecimal * 100)
+                .setScale(4, RoundingMode.HALF_UP);
     }
 
-    private BigDecimal calcularPrecioBono(List<com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.CashFlowEntry> entries, BigDecimal tasaDescuento) {
-        // Implementación del cálculo del precio del bono
-        return BigDecimal.ZERO; // Placeholder
+    private BigDecimal calcularTCEA(BigDecimal tirPercentual,
+                                    Periodicidad frecuenciaPago) {
+        // 1) De porcentaje a decimal: 12.3456% → 0.123456
+        BigDecimal tirDecimal = tirPercentual
+                .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+
+        // 2) Número de periodos anuales (p.ej. semestral → 2)
+        int periodosPorAnio = 12 / frecuenciaPago.getMeses();
+
+        // 3) Anualiza: (1 + tirDecimal)^(periodosPorAnio) – 1
+        double tceaDecimal = Math.pow(
+                1 + tirDecimal.doubleValue(),
+                periodosPorAnio
+        ) - 1;
+
+        // 4) A porcentaje y escala
+        return BigDecimal.valueOf(tceaDecimal * 100)
+                .setScale(4, RoundingMode.HALF_UP);
     }
 
-    private BigDecimal calcularTREA(Bono bono, BigDecimal tasaDescuento) {
+
+
+    private BigDecimal calcularTREA() {
         // Implementación del cálculo de TREA
         return BigDecimal.ZERO; // Placeholder
     }
 
-    private BigDecimal calcularDuracion(List<CashFlowEntry> entries, BigDecimal tasaDescuento) {
+    private BigDecimal calcularDuracion() {
         // Implementación del cálculo de duración de Macaulay
         return BigDecimal.ZERO; // Placeholder
     }
 
-    private BigDecimal calcularDuracionModificada(BigDecimal duracion, BigDecimal tasaDescuento) {
-        return duracion.divide(BigDecimal.ONE.add(tasaDescuento), PRECISION, ROUNDING);
+    private BigDecimal calcularDuracionModificada() {
+        return BigDecimal.ZERO; // Placeholder
     }
 
-    private BigDecimal calcularConvexidad(List<com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.CashFlowEntry> entries, BigDecimal tasaDescuento) {
+    private BigDecimal calcularConvexidad() {
         // Implementación del cálculo de convexidad
         return BigDecimal.ZERO; // Placeholder
-    }*/
+    }
 }

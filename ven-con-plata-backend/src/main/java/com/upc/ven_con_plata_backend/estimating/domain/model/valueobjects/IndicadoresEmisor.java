@@ -13,6 +13,8 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class IndicadoresEmisor {
+    @Column(precision = 15, scale = 2)
+    private BigDecimal precioBono;
 
     @Column(precision = 15, scale = 2)
     private BigDecimal van;
@@ -23,8 +25,9 @@ public class IndicadoresEmisor {
     @Column(precision = 8, scale = 4)
     private BigDecimal tcea;
 
-    public IndicadoresEmisor(BigDecimal van, BigDecimal tir, BigDecimal tcea) {
+    public IndicadoresEmisor(BigDecimal precioBono, BigDecimal van, BigDecimal tir, BigDecimal tcea) {
         validarIndicadores(van, tir, tcea);
+        this.precioBono = precioBono;
         this.van = van;
         this.tir = tir;
         this.tcea = tcea;
