@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class CalculadoraFinancieraDomainService {
-
+    /*
     private static final int PRECISION = 10;
     private static final RoundingMode ROUNDING = RoundingMode.HALF_UP;
 
@@ -86,5 +86,5 @@ public class CalculadoraFinancieraDomainService {
     private BigDecimal calcularConvexidad(List<com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.CashFlowEntry> entries, BigDecimal tasaDescuento) {
         // Implementación del cálculo de convexidad
         return BigDecimal.ZERO; // Placeholder
-    }
+    }*/
 }

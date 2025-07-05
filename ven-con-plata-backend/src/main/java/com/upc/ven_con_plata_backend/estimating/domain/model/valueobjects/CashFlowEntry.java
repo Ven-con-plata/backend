@@ -21,7 +21,7 @@ public class CashFlowEntry {
     private int periodo;
 
     @Column(nullable = false)
-    private LocalDate fecha_vencimiento;
+    private LocalDate fecha_pago;
 
     @Column(nullable = false)
     private Double amortizacion;
@@ -36,12 +36,15 @@ public class CashFlowEntry {
     @Column (nullable = false)
     private Double cuota_total;
 
-    /*
-    public CashFlowEntry(LocalDate fecha, BigDecimal monto, TipoEntry tipo) {
-        validarDatos(fecha, monto, tipo);
-        this.fecha = fecha;
-        this.monto = monto;
-        this.tipo = tipo;
+
+    public CashFlowEntry(int periodo, LocalDate fecha_pago, Double amortizacion, Double interes, String tipo, Double cuota_total) {
+        //validarDatos(fecha, monto, tipo);
+        this.periodo = periodo;
+        this.amortizacion = amortizacion;
+        this.interes = interes;
+        this.fecha_pago = fecha_pago;
+        this.cuota_total = cuota_total;
+        this.tipo = TipoEntry.valueOf(tipo.toUpperCase());
     }
 
     private void validarDatos(LocalDate fecha, BigDecimal monto, TipoEntry tipo) {
@@ -55,7 +58,7 @@ public class CashFlowEntry {
             throw new IllegalArgumentException("El tipo de entry no puede ser nulo");
         }
     }
-
+/*
     public boolean esIngreso() {
         return monto.compareTo(BigDecimal.ZERO) > 0;
     }

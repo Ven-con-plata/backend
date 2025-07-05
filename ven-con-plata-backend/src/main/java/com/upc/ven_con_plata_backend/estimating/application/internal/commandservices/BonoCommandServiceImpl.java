@@ -21,7 +21,7 @@ public class BonoCommandServiceImpl implements BonoCommandService {
         this.bonoRepository = bonoRepository;
         this.calculadoraService = calculadoraService;
     }
-
+    /*
     @Override
     public Optional<Bono> handle(CreateBonoCommand command) {
         Tasa tasaInteres = new Tasa(command.tasaInteres(), command.periodicidadInteres());
@@ -144,5 +144,5 @@ public class BonoCommandServiceImpl implements BonoCommandService {
         return bono.getGracia().getTotal() != command.periodosGraciaTotal() ||
                 bono.getGracia().getParcial() != command.periodosGraciaParcial();
     }
-
+    */
 }

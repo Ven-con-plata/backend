@@ -22,16 +22,15 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Currency currency;
+
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal valorNominal;
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal valorComercial;
-
-    @Column(nullable = false)
-    private LocalDate fechaEmision;
 
     @Column(nullable = false)
     private LocalDate fechaVencimiento;
@@ -79,12 +78,7 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
 
     protected Bono() {}
 
-    /*public Bono(Moneda moneda, BigDecimal valorNominal, BigDecimal valorComercial,
-                LocalDate fechaEmision, LocalDate fechaVencimiento, Integer plazoEnAnios,
-                Periodicidad frecuenciaPago, Tasa tasaInteres, Tasa cok,
-                PeriodosGracia gracia, CostesInversion costesInversion,
-                BeneficioInversion beneficioInversion, CostesInicialesDeudor costesInicialesDeudor,
-                GastosPeriodicosDeudor gastosPeriodicosDeudor) {
+    public Bono() {
 
         validarDatosBasicos(valorNominal, valorComercial, fechaEmision, fechaVencimiento);
         validarTasas(tasaInteres, cok);

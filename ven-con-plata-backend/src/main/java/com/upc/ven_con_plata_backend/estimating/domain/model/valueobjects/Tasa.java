@@ -39,7 +39,7 @@ public class Tasa {
             throw new IllegalArgumentException("La unidad de la tasa no puede ser nula");
         }
     }
-
+    /*
     public BigDecimal convertirA(Periodicidad nuevaUnidad) {
         if (this.unidad == nuevaUnidad) {
             return this.valor;
@@ -68,4 +68,5 @@ public class Tasa {
     public String toString() {
         return valor + "% " + unidad.name();
     }
+     */
 }

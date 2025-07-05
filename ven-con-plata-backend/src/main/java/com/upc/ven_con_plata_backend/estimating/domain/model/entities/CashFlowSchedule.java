@@ -19,10 +19,6 @@ public class CashFlowSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bono_id", nullable = false)
-    private Bono bono;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "rol", nullable = false)
     private RolSchedule rol;
@@ -74,6 +70,5 @@ public class CashFlowSchedule {
     public boolean esInversor() {
         return rol == RolSchedule.INVERSOR;
     }
-
      */
 }
