@@ -24,7 +24,6 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     @Column(nullable = false)
     private Currency moneda;
 
-
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal valorNominal;
 

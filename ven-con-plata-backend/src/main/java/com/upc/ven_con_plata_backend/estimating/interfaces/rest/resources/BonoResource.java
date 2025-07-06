@@ -7,37 +7,34 @@ import java.util.List;
 
 public record BonoResource(
         Long id,
-        String moneda,
-        BigDecimal valorNominal,
-        BigDecimal valorComercial,
-        LocalDate fechaEmision,
-        LocalDate fechaVencimiento,
-        Integer plazoEnAnios,
-        String frecuenciaPago,
-        BigDecimal tasaInteres,
-        String periodicidadInteres,
-        BigDecimal cok,
-        String periodicidadCok,
+        LocalDate createdAt,
+        LocalDate updatedAt,
+        BigDecimal primaVencimiento,
+        int cokUnidad,
+        BigDecimal cokValor,
+        BigDecimal comisionActivacion,
+        BigDecimal comisionEstudio,
+        BigDecimal flotacion,
+        BigDecimal cavali,
+        BigDecimal notariales,
+        BigDecimal registrales,
+        BigDecimal tasacion,
         String estado,
-        LocalDateTime actualizadoEn,
-        String metodoAmortizacion,
-
-        // Indicadores del emisor
-        /*BigDecimal vanEmisor,
-        BigDecimal tirEmisor,
-        BigDecimal tceaEmisor,
-        */
-        // Indicadores del inversor
-        /*BigDecimal vanInversor,
-        BigDecimal tirInversor,
-        BigDecimal precioBono,
-        BigDecimal treaInversor,
-        BigDecimal duracion,
-        BigDecimal duracionModificada,
-        BigDecimal convexidad,
-        */
-        // Cronogramas
-        List<CashFlowEntryResource> cronogramaEmisor,
-        List<CashFlowEntryResource> cronogramaInversor
+        LocalDate fechaVencimiento,
+        String frecuenciaPago,
+        BigDecimal comisionPeriodica,
+        BigDecimal gastosAdministrativos,
+        BigDecimal portes,
+        BigDecimal seguroDesgravamen,
+        BigDecimal seguroRiesgo,
+        int parcial,
+        int total,
+        String moneda,
+        int plazoEnAnios,
+        int interesUnidad,
+        BigDecimal interesValor,
+        BigDecimal valorComercial,
+        BigDecimal valorNominal,
+        List<CashFlowScheduleResource> cronogramas
 ) {
 }
