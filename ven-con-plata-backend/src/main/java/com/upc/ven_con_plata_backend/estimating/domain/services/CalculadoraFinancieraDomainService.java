@@ -10,6 +10,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 
+@Service
 public class CalculadoraFinancieraDomainService {
     private static final int PRECISION = 10;
     private static final RoundingMode ROUNDING = RoundingMode.HALF_UP;

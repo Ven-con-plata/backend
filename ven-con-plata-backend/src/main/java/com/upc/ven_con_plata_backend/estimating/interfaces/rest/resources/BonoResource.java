@@ -23,19 +23,19 @@ public record BonoResource(
         String metodoAmortizacion,
 
         // Indicadores del emisor
-        BigDecimal vanEmisor,
+        /*BigDecimal vanEmisor,
         BigDecimal tirEmisor,
         BigDecimal tceaEmisor,
-
+        */
         // Indicadores del inversor
-        BigDecimal vanInversor,
+        /*BigDecimal vanInversor,
         BigDecimal tirInversor,
         BigDecimal precioBono,
         BigDecimal treaInversor,
         BigDecimal duracion,
         BigDecimal duracionModificada,
         BigDecimal convexidad,
-
+        */
         // Cronogramas
         List<CashFlowEntryResource> cronogramaEmisor,
         List<CashFlowEntryResource> cronogramaInversor

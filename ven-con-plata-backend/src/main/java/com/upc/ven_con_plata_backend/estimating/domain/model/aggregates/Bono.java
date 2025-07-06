@@ -14,14 +14,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 @Entity
 @Getter
 @Setter(AccessLevel.PROTECTED)
 public class Bono extends AuditableAbstractAggregateRoot<Bono> {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false)
     private Currency moneda;
@@ -74,7 +72,8 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     private EstadoBono estado = EstadoBono.BORRADOR;
 
     // Relación con los cronogramas (emisor e inversor)
-    @OneToMany(mappedBy = "bono", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = ALL, orphanRemoval = true)
+    @JoinColumn(name = "bono_id")   // crea la FK en cashflow_schedules
     private List<CashFlowSchedule> cronogramas = new ArrayList<>();
 
     protected Bono() {}

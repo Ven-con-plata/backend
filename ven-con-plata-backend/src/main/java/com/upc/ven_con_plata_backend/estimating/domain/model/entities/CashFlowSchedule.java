@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 @Entity
 @Getter
 public class CashFlowSchedule {
@@ -27,18 +29,12 @@ public class CashFlowSchedule {
     @Column(name = "rol", nullable = false)
     private RolSchedule rol;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "entries",
-            joinColumns = @JoinColumn(name = "schedule_id")
-    )
+    @OneToMany(cascade = ALL, orphanRemoval = true)
+    @JoinColumn(name = "schedule_id")   // ← columna en cashflow_entry
     private List<CashFlowEntry> entries = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(
-            name= "indicadores",
-            joinColumns = @JoinColumn(name = "indicator_id")
-    )
+    @OneToMany(cascade = ALL, orphanRemoval = true)
+    @JoinColumn(name = "schedule_id")   // ← columna en cashflow_entry
     private List<Indicator> indicadores = new ArrayList<>();
 
     protected CashFlowSchedule() { /* JPA */ }

@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface BonoCommandService {
     Optional<Bono> handle(CreateBonoCommand command);
-    Optional<Bono> handle(UpdateBonoCommand command);
+
+    //Optional<Bono> handle(UpdateBonoCommand command);
 }

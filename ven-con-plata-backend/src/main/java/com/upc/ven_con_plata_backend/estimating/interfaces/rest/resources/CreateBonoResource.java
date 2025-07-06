@@ -6,8 +6,6 @@ import java.time.LocalDate;
 public record CreateBonoResource(String moneda,
                                  BigDecimal valorNominal,
                                  BigDecimal valorComercial,
-                                 LocalDate fechaEmision,
-                                 LocalDate fechaVencimiento,
                                  Integer plazoEnAnios,
                                  String frecuenciaPago,
                                  BigDecimal tasaInteres,

@@ -8,17 +8,17 @@ import com.upc.ven_con_plata_backend.estimating.interfaces.rest.resources.CashFl
 import java.util.List;
 
 public class BonoResourceFromEntityAssembler {
-
+    /*
     public static BonoResource toResourceFromEntity(Bono entity) {
-        var cronogramaEmisor = entity.getCronogramaEmisor();
-        var cronogramaInversor = entity.getCronogramaInversor();
+        //var cronogramaEmisor = entity.getCronogramaEmisor();
+        //var cronogramaInversor = entity.getCronogramaInversor();
 
         return new BonoResource(
                 entity.getId(),
-                entity.getCurrency().name(),
+                entity.getMoneda().name(),
                 entity.getValorNominal(),
                 entity.getValorComercial(),
-                entity.getFechaEmision(),
+                entity.getCreatedAt(),
                 entity.getFechaVencimiento(),
                 entity.getPlazoEnAnios(),
                 entity.getFrecuenciaPago().name(),
@@ -27,18 +27,19 @@ public class BonoResourceFromEntityAssembler {
                 entity.getCok().getValor(),
                 entity.getCok().getUnidad().name(),
                 entity.getEstado().name(),
-                entity.getActualizadoEn(),
-                entity.getMetodoAmortizacion(),
+                entity.getUpdatedAt(),
 
                 // Indicadores del emisor
+                /*
                 cronogramaEmisor != null && cronogramaEmisor.getIndicadoresEmisor() != null ?
                         cronogramaEmisor.getIndicadoresEmisor().getVan() : null,
                 cronogramaEmisor != null && cronogramaEmisor.getIndicadoresEmisor() != null ?
                         cronogramaEmisor.getIndicadoresEmisor().getTir() : null,
                 cronogramaEmisor != null && cronogramaEmisor.getIndicadoresEmisor() != null ?
                         cronogramaEmisor.getIndicadoresEmisor().getTcea() : null,
-
+                */
                 // Indicadores del inversor
+                /*
                 cronogramaInversor != null && cronogramaInversor.getIndicadoresInversor() != null ?
                         cronogramaInversor.getIndicadoresInversor().getVan() : null,
                 cronogramaInversor != null && cronogramaInversor.getIndicadoresInversor() != null ?
@@ -68,5 +69,5 @@ public class BonoResourceFromEntityAssembler {
                         entry.getMonto()
                 ))
                 .toList();
-    }
+    }*/
 }

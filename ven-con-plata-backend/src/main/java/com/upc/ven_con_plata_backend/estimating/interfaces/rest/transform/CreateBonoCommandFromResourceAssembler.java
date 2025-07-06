@@ -9,11 +9,9 @@ public class CreateBonoCommandFromResourceAssembler {
 
     public static CreateBonoCommand toCommandFromResource(CreateBonoResource resource) {
         return new CreateBonoCommand(
-                Currency.valueOf(resource.moneda()),
+                resource.moneda(),
                 resource.valorNominal(),
                 resource.valorComercial(),
-                resource.fechaEmision(),
-                resource.fechaVencimiento(),
                 resource.plazoEnAnios(),
                 Periodicidad.valueOf(resource.frecuenciaPago()),
                 resource.tasaInteres(),
