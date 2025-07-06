@@ -27,24 +27,21 @@ public class CalculadoraFinancieraDomainService {
 
         return new IndicadoresEmisor(precioBono, van, tir, tcea);
     }
-/*
-    public IndicadoresInversor calcularIndicadoresInversor(CashFlowSchedule cashFlowSchedule) {
-        // Calcular todos los indicadores desde perspectiva del inversor
-        if (cashFlowSchedule == null) {
-            throw new IllegalStateException("El bono debe tener cronograma de inversor generado");
+
+    public IndicadoresInversor calcularIndicadoresInversor(List<CashFlowEntry> cashFlowEntries, BigDecimal cok, Periodicidad frecuenciaPago) {
+        // Calcular VAN, TIR y TCEA desde perspectiva del emisor
+        if (cashFlowEntries == null) {
+            throw new IllegalStateException("El bono debe tener cronograma de emisor generado");
         }
+        BigDecimal precioBono = calcularPrecioBono(cashFlowEntries, cok);
+        BigDecimal van = calcularVAN(cashFlowEntries, precioBono);
+        // 1) TIR periódica en %
+        BigDecimal tir = calcularTIR(cashFlowEntries);
+        BigDecimal trea = calcularTREA(tir, frecuenciaPago);
 
-        BigDecimal van = calcularVAN();
-        BigDecimal tir = calcularTIR();
-        BigDecimal precioBono = calcularPrecioBono();
-        BigDecimal trea = calcularTREA();
-        BigDecimal duracion = calcularDuracion();
-        BigDecimal duracionModificada = calcularDuracionModificada();
-        BigDecimal convexidad = calcularConvexidad();
-
-        return new IndicadoresInversor(van, tir, precioBono, trea, duracion, duracionModificada, convexidad);
+        return new IndicadoresInversor(precioBono, van, tir, trea);
     }
-*/
+
     // Métodos privados de cálculo
     private BigDecimal calcularPrecioBono(List<CashFlowEntry> entries,
                                           BigDecimal tasaPeriodica) {
@@ -107,11 +104,24 @@ public class CalculadoraFinancieraDomainService {
                 .setScale(4, RoundingMode.HALF_UP);
     }
 
+    private BigDecimal calcularTREA(BigDecimal tirPercentual,
+                                    Periodicidad frecuenciaPago) {
+        // Convertir la TIR de porcentaje a decimal
+        BigDecimal tirDecimal = tirPercentual
+                .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 
+        // Número de períodos de pago por año (p.ej. semestral → 2)
+        int periodosPorAnio = 12 / frecuenciaPago.getMeses();
 
-    private BigDecimal calcularTREA() {
-        // Implementación del cálculo de TREA
-        return BigDecimal.ZERO; // Placeholder
+        // Anualizar: (1 + tirDecimal)^(periodosPorAnio) – 1
+        double treaDecimal = Math.pow(
+                1 + tirDecimal.doubleValue(),
+                periodosPorAnio
+        ) - 1;
+
+        // A porcentaje con 4 decimales
+        return BigDecimal.valueOf(treaDecimal * 100)
+                .setScale(4, RoundingMode.HALF_UP);
     }
 
     private BigDecimal calcularDuracion() {

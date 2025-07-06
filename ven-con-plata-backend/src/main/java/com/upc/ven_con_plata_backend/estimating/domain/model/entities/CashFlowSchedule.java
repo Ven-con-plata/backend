@@ -285,11 +285,11 @@ public class CashFlowSchedule {
     private void generarIndicadoresInversor(Bono bono){
         BigDecimal cok = cambiarCok(bono);
         CalculadoraFinancieraDomainService calculadoraDomainService = new CalculadoraFinancieraDomainService();
-        IndicadoresEmisor indicadoresInversor = calculadoraDomainService.calcularIndicadoresInversor(this.entries, cok, bono.getFrecuenciaPago());
+        IndicadoresInversor indicadoresInversor = calculadoraDomainService.calcularIndicadoresInversor(this.entries, cok, bono.getFrecuenciaPago());
         this.indicadores.add(new Indicator("TOTAL_BOND_PRICE",indicadoresInversor.getPrecioBono(),"VALOR"));
         this.indicadores.add(new Indicator("VAN",indicadoresInversor.getVan(),"VALOR"));
         this.indicadores.add(new Indicator("TIR",indicadoresInversor.getTir(),"PORCENTAJE"));
-        this.indicadores.add(new Indicator("TCEA",indicadoresInversor.getTrea(),"PORCENTAJE"));
+        this.indicadores.add(new Indicator("TREA",indicadoresInversor.getTrea(),"PORCENTAJE"));
     }
 
     // helper

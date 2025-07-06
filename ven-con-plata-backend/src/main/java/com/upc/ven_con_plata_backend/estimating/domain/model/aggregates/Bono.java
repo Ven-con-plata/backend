@@ -135,10 +135,10 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.cronogramas.add(
                 cashFlowScheduleEmisor
         );
-        // Generar cronograma para inversor
-        /*this.cronogramas.add(
-                CashFlowSchedule.crearPara(this, RolSchedule.INVERSOR)
-        );*/
+        CashFlowSchedule cashFlowScheduleInversor = new CashFlowSchedule(this, RolSchedule.INVERSOR);
+        this.cronogramas.add(
+                cashFlowScheduleInversor
+        );
     }
 /*
     private void validarPuedeSerModificado() {

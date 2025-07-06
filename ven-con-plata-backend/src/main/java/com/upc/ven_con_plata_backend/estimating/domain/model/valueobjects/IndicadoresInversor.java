@@ -35,6 +35,7 @@ public class IndicadoresInversor {
     @Column(precision = 10, scale = 6)
     private BigDecimal convexidad;
 
+    /*TODO habilitar todos*/
     public IndicadoresInversor(BigDecimal van, BigDecimal tir, BigDecimal precioBono,
                                BigDecimal trea, BigDecimal duracion, BigDecimal duracionModificada,
                                BigDecimal convexidad) {
@@ -46,6 +47,13 @@ public class IndicadoresInversor {
         this.duracion = duracion;
         this.duracionModificada = duracionModificada;
         this.convexidad = convexidad;
+    }
+    public IndicadoresInversor(BigDecimal precioBono, BigDecimal van, BigDecimal tir,
+                               BigDecimal trea) {
+        this.van = van;
+        this.tir = tir;
+        this.precioBono = precioBono;
+        this.trea = trea;
     }
 
     private void validarIndicadores(BigDecimal van, BigDecimal tir, BigDecimal precioBono,
