@@ -10,6 +10,7 @@ public record CreateBonoCommand(
         String moneda,
         BigDecimal valorNominal,
         BigDecimal valorComercial,
+        LocalDate fechaVencimiento,
         Integer plazoEnAnios,
         Periodicidad frecuenciaPago,
         BigDecimal tasaInteres,

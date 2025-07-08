@@ -1,17 +1,20 @@
 package com.upc.ven_con_plata_backend.estimating.interfaces.rest.resources;
 
+import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.Periodicidad;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record CreateBonoResource(String moneda,
                                  BigDecimal valorNominal,
                                  BigDecimal valorComercial,
+                                 LocalDate fechaVencimiento,
                                  Integer plazoEnAnios,
-                                 String frecuenciaPago,
+                                 Periodicidad frecuenciaPago,
                                  BigDecimal tasaInteres,
-                                 String periodicidadInteres,
+                                 Periodicidad periodicidadInteres,
                                  BigDecimal cok,
-                                 String periodicidadCok,
+                                 Periodicidad periodicidadCok,
                                  Integer periodosGraciaTotal,
                                  Integer periodosGraciaParcial,
                                  BigDecimal costeFlotacion,

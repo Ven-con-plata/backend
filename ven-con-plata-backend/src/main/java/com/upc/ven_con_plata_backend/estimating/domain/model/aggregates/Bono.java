@@ -68,6 +68,8 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
     @Embedded
     private GastosPeriodicosDeudor gastosPeriodicosDeudor;
 
+    private LocalDate setCreatedAt;
+
     private EstadoBono estado = EstadoBono.BORRADOR;
 
     // Relación con los cronogramas (emisor e inversor)
@@ -77,33 +79,47 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
 
     protected Bono() {}
 
-    public Bono(CreateBonoCommand cmd) {
+    protected Bono(Currency moneda, BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaVencimiento,
+                   int plazoEnAnios, Periodicidad frecuenciaPago, Tasa tasaInteres, Tasa cok, PeriodosGracia gracia,
+                   CostesInversion costesInversion, BeneficioInversion beneficioInversion,
+                   CostesInicialesDeudor costesInicialesDeudor, GastosPeriodicosDeudor gastosPeriodicosDeudor) {
+        validarDatosBasicos(valorNominal, valorComercial);
+        validarTasas(tasaInteres.getValor(), cok.getValor());
+        this.moneda = moneda;
+        this.valorNominal = valorNominal;
+        this.valorComercial = valorComercial;
+        this.fechaVencimiento = fechaVencimiento;
+        this.plazoEnAnios = plazoEnAnios;
+        this.frecuenciaPago = frecuenciaPago;
+        this.tasaInteres = tasaInteres;
+        this.cok = cok;
+        this.gracia = gracia;
+        this.costesInversion = costesInversion;
+        this.beneficioInversion = beneficioInversion;
+        this.costesInicialesDeudor = costesInicialesDeudor;
+        this.gastosPeriodicosDeudor = gastosPeriodicosDeudor;
+        this.setCreatedAt(LocalDate.now()); // Explicitly setting createdAt
+        // Genera en cascada los dos cronogramas (Emisor e Inversor)
+        this.generarCashflowEIndicadores();
+    }
 
+    public Bono(CreateBonoCommand cmd) {
         validarDatosBasicos(cmd.valorNominal(), cmd.valorComercial());
         validarTasas(cmd.tasaInteres(), cmd.cok());
-
         this.moneda = Currency.valueOf(cmd.moneda());
         this.valorNominal = cmd.valorNominal();
         this.valorComercial = cmd.valorComercial();
+        this.fechaVencimiento = LocalDate.now().plusYears(cmd.plazoEnAnios());
         this.plazoEnAnios = cmd.plazoEnAnios();
-        // periocidad base
         this.frecuenciaPago = cmd.frecuenciaPago();
-        // periocidad interes
         this.tasaInteres = new Tasa(cmd.tasaInteres(), cmd.periodicidadInteres());
-        // periocidad cok
         this.cok = new Tasa(cmd.cok(), cmd.periodicidadCok());
-
         this.gracia = new PeriodosGracia(cmd.periodosGraciaTotal(), cmd.periodosGraciaParcial());
-
-
         this.costesInversion = new CostesInversion(cmd.costeFlotacion(), cmd.costeCavali());
         this.beneficioInversion = new BeneficioInversion(cmd.primaVencimiento());
         this.costesInicialesDeudor = new CostesInicialesDeudor(cmd.costesNotariales(),cmd.costesRegistrales(), cmd.costesTasacion(), cmd.comisionEstudio(),cmd.comisionActivacion());
         this.gastosPeriodicosDeudor = new GastosPeriodicosDeudor(cmd.seguroDesgravamen(), cmd.seguroRiesgo(), cmd.comisionPeriodica(), cmd.portes(), cmd.gastosAdministrativos());
-
-        //calcular vencimiento
-        this.fechaVencimiento = LocalDate.now().plusYears(plazoEnAnios);
-
+        this.setCreatedAt(LocalDate.now()); // Explicitly setting createdAt
         // Genera en cascada los dos cronogramas (Emisor e Inversor)
         this.generarCashflowEIndicadores();
     }
@@ -137,6 +153,9 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
         this.cronogramas.add(
                 cashFlowScheduleInversor
         );
+    }
+
+    private void setCreatedAt(LocalDate now) {
     }
 /*
     private void validarPuedeSerModificado() {

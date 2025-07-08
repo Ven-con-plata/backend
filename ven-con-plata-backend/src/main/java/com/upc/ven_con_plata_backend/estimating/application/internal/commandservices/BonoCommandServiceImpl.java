@@ -15,15 +15,16 @@ import java.util.Optional;
 public class BonoCommandServiceImpl implements BonoCommandService {
 
     private final BonoRepository bonoRepository;
-    //private final CalculadoraFinancieraDomainService calculadoraService;
+    private final CalculadoraFinancieraDomainService calculadoraService;
 
-    public BonoCommandServiceImpl(BonoRepository bonoRepository) {
+    public BonoCommandServiceImpl(BonoRepository bonoRepository, CalculadoraFinancieraDomainService calculadoraService) {
         this.bonoRepository = bonoRepository;
+        this.calculadoraService = calculadoraService;
     }
 
     @Override
     public Optional<Bono> handle(CreateBonoCommand command) {
-        /*Tasa tasaInteres = new Tasa(command.tasaInteres(), command.periodicidadInteres());
+        Tasa tasaInteres = new Tasa(command.tasaInteres(), command.periodicidadInteres());
         Tasa cok = new Tasa(command.cok(), command.periodicidadCok());
         PeriodosGracia gracia = new PeriodosGracia(command.periodosGraciaTotal(), command.periodosGraciaParcial());
         CostesInversion costesInversion = new CostesInversion(command.costeFlotacion(), command.costeCavali());
@@ -38,25 +39,8 @@ public class BonoCommandServiceImpl implements BonoCommandService {
         );
 
         // Crear aggregate
-        Bono bono = new Bono(
-                command.currency(), command.valorNominal(), command.valorComercial(),
-                command.fechaEmision(), command.fechaVencimiento(), command.plazoEnAnios(),
-                command.frecuenciaPago(), tasaInteres, cok, gracia, costesInversion,
-                beneficioInversion, costesIniciales, gastosPeriodicosDeudor
-        );
-
-        // Generar cronogramas
-        bono.generarCronogramas();
-
-        // Calcular indicadores
-        IndicadoresEmisor indicadoresEmisor = calculadoraService.calcularIndicadoresEmisor(bono);
-        IndicadoresInversor indicadoresInversor = calculadoraService.calcularIndicadoresInversor(bono, cok.getValor());
-
-        // Establecer indicadores en los cronogramas
-        bono.getCronogramaEmisor().establecerIndicadoresEmisor(indicadoresEmisor);
-        bono.getCronogramaInversor().establecerIndicadoresInversor(indicadoresInversor);
-        */
         Bono bono = new Bono(command);
+
         // Guardar
         Bono savedBono = bonoRepository.save(bono);
 

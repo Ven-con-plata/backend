@@ -34,6 +34,7 @@ public class BonoController {
     }
 
     @PostMapping
+
     public ResponseEntity<BonoResource> createBono(@RequestBody CreateBonoResource resource) {
         var createBonoCommand = CreateBonoCommandFromResourceAssembler.toCommandFromResource(resource);
         var bonoOptional = bonoCommandService.handle(createBonoCommand);
