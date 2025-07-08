@@ -1,45 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.3</version>
+		<version>3.3.0</version> <!-- Usando una versión estable en lugar de SNAPSHOT para consistencia -->
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.upc</groupId>
-	<artifactId>ven-con-plata-backend</artifactId>
+	<artifactId>ven_con_plata_backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ven-con-plata-backend</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<name>ven-con-plata</name>
+	<description>ven-con-plata</description>
+
 	<properties>
 		<java.version>17</java.version>
+		<!-- DEFINIMOS LAS VERSIONES AQUÍ -->
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<org.projectlombok.version>1.18.30</org.projectlombok.version>
 	</properties>
+
 	<dependencies>
+		<!-- Tus dependencias no cambian -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.29</version> <!-- Asegúrate de que esta sea la versión más reciente -->
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -60,6 +51,8 @@
 			<artifactId>pluralize</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+
+		<!-- MapStruct: La versión se gestiona en <properties> -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
@@ -71,6 +64,8 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.5.0</version>
 		</dependency>
+
+		<!-- Lombok: La versión se gestiona en <properties> -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -115,24 +110,34 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version> <!-- Usar una versión reciente del plugin -->
 				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<!-- ===================== ESTA ES LA SECCIÓN CORREGIDA ===================== -->
 					<annotationProcessorPaths>
+						<!-- 1. Lombok debe ir primero para generar getters/setters -->
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>${org.projectlombok.version}</version>
 						</path>
+
+						<!-- 2. MapStruct va después para que pueda usar los métodos generados por Lombok -->
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${org.mapstruct.version}</version>
 						</path>
+
+						<!-- 3. (MUY RECOMENDADO) Binding para que Lombok y MapStruct colaboren sin problemas -->
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
 							<version>0.2.0</version>
 						</path>
 					</annotationProcessorPaths>
+					<!-- ======================================================================== -->
 				</configuration>
 			</plugin>
 			<plugin>

@@ -5,8 +5,8 @@ import com.upc.ven_con_plata_backend.iam.domain.model.entities.Role;
 import com.upc.ven_con_plata_backend.iam.interfaces.rest.resources.UserResource;
 
 public class UserResourceFromEntityAssembler {
-    public static UserResource toResourceFromEntity(User entity) {
-        var roles = entity.getRoles().stream().map(Role::getStringName).toList();
-        return new UserResource(entity.getId(), entity.getUsername(), roles);
+    public static UserResource toResourceFromEntity(User user) {
+        var roles = user.getRoles().stream().map(Role::getStringName).toList();
+        return new UserResource(user.getId(), user.getUsername(), roles);
     }
 }

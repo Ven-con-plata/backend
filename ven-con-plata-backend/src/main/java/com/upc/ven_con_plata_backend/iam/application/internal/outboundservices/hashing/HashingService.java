@@ -2,6 +2,7 @@ package com.upc.ven_con_plata_backend.iam.application.internal.outboundservices.
 
 
 public interface HashingService {
+
     String encode(CharSequence rawPassword);
-    boolean matches(CharSequence rawPassword, String encodedPassword);
+    boolean matches(CharSequence rawPassword, String encodePassword);
 }

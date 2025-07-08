@@ -9,7 +9,6 @@ import com.upc.ven_con_plata_backend.iam.interfaces.rest.transform.Authenticated
 import com.upc.ven_con_plata_backend.iam.interfaces.rest.transform.SignInCommandFromResourceAssembler;
 import com.upc.ven_con_plata_backend.iam.interfaces.rest.transform.SignUpCommandFromResourceAssembler;
 import com.upc.ven_con_plata_backend.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/v1/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Authentication", description = "Authentication Endpoints")
 public class AuthenticationController {
     private final UserCommandService userCommandService;
 
@@ -28,24 +26,24 @@ public class AuthenticationController {
         this.userCommandService = userCommandService;
     }
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<UserResource> signUp(@RequestBody SignUpResource resource) {
-        var signUpCommand = SignUpCommandFromResourceAssembler.toCommandFromResource(resource);
-        var user = userCommandService.handle(signUpCommand);
-        if (user.isEmpty()) return ResponseEntity.badRequest().build();
-        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
-        return new ResponseEntity<>(userResource, HttpStatus.CREATED);
-    }
-
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticatedUserResource> signIn(@RequestBody SignInResource resource) {
         var signInCommand = SignInCommandFromResourceAssembler.toCommandFromResource(resource);
         var authenticatedUser = userCommandService.handle(signInCommand);
         if (authenticatedUser.isEmpty()) return ResponseEntity.notFound().build();
-        var user = authenticatedUser.get().getLeft();
-        var token = authenticatedUser.get().getRight();
-        var role = user.getRole(); // Use getRole() method
-        var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(user, token, role);
+        var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(
+                authenticatedUser.get().getLeft(), authenticatedUser.get().getRight()
+        );
         return ResponseEntity.ok(authenticatedUserResource);
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<UserResource> signIn(@RequestBody SignUpResource resource) {
+        var signUpCommand = SignUpCommandFromResourceAssembler.toCommandFromResource(resource);
+        var user = userCommandService.handle(signUpCommand);
+        if (user.isEmpty()) return ResponseEntity.notFound().build();
+        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(
+                user.get());
+        return new ResponseEntity<>(userResource, HttpStatus.CREATED);
     }
 }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class SignUpCommandFromResourceAssembler {
     public static SignUpCommand toCommandFromResource(SignUpResource resource) {
-        var roles = resource.roles() !=null
-                ? resource.roles().stream().map(Role::toRoleFromName).toList()
-                : new ArrayList<Role>();
+        var roles = resource.roles() != null ? resource.roles().stream().map(
+                Role::toRoleFromName).toList() : new ArrayList<Role>();
+
         return new SignUpCommand(resource.username(), resource.password(), roles);
     }
 }

@@ -19,6 +19,7 @@ public class UserQueryServiceImpl implements UserQueryService {
         this.userRepository = userRepository;
     }
 
+
     @Override
     public List<User> handle(GetAllUsersQuery query) {
         return userRepository.findAll();

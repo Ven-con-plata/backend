@@ -1,5 +1,6 @@
 package com.upc.ven_con_plata_backend.iam.infrastructure.hashing.bcrypt.services;
 
+
 import com.upc.ven_con_plata_backend.iam.infrastructure.hashing.bcrypt.BCryptHashingService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class HashingServiceImpl implements BCryptHashingService {
     }
 
     @Override
-    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return passwordEncoder.matches(rawPassword, encodedPassword);
+    public boolean matches(CharSequence rawPassword, String encodePassword) {
+        return passwordEncoder.matches(rawPassword, encodePassword);
     }
 }

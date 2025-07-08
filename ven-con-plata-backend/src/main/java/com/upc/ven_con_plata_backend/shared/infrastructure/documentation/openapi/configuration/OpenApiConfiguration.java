@@ -14,30 +14,30 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfiguration {
     @Bean
     public OpenAPI learningPlatformOpenApi() {
-        // General configuration
         var openApi = new OpenAPI();
         openApi
                 .info(new Info()
                         .title("ACME Ven con Plata API")
-                        .description("ACME Ven con plara application REST API documentation.")
+                        .description("ACME Ven con Plata application REST API documentation.")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")
                                 .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("ACME Ven con Plata Wiki Documentation")
+                        .description("ACME Ven con Plata wiki Documentation")
                         .url("https://acme-ven-con-plata.wiki.github.io/docs"));
-        // Add Security Scheme
+
         final String securitySchemeName = "bearerAuth";
+
+
         openApi.addSecurityItem(new SecurityRequirement()
                         .addList(securitySchemeName))
                 .components(new Components()
-                        .addSecuritySchemes(securitySchemeName,
-                                new SecurityScheme()
-                                        .name(securitySchemeName)
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")));
-        // Return OpenAPI configuration object*/
+                        .addSecuritySchemes(securitySchemeName, new SecurityScheme()
+                                .name(securitySchemeName)
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
+
         return openApi;
     }
 }

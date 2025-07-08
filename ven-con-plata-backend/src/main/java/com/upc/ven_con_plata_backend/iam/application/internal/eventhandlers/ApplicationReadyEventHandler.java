@@ -8,8 +8,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-
 @Service
 public class ApplicationReadyEventHandler {
     private final RoleCommandService roleCommandService;
@@ -22,13 +20,9 @@ public class ApplicationReadyEventHandler {
     @EventListener
     public void on(ApplicationReadyEvent event) {
         var applicationName = event.getApplicationContext().getId();
-        LOGGER.info("Starting to verify if roles seeding is needed for {} at {}", applicationName, currentTimestamp());
+        LOGGER.info("Starting application " + applicationName + ", verify if roles seeding is needed");
         var seedRolesCommand = new SeedRolesCommand();
         roleCommandService.handle(seedRolesCommand);
-        LOGGER.info("Roles seeding verification finished for {} at {}", applicationName, currentTimestamp());
-    }
-
-    private Timestamp currentTimestamp() {
-        return new Timestamp(System.currentTimeMillis());
+        LOGGER.info("Roles seeding verification finished for {}", applicationName);
     }
 }
