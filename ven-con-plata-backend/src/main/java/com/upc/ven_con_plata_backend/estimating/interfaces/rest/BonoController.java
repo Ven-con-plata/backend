@@ -5,6 +5,8 @@ import com.upc.ven_con_plata_backend.estimating.domain.model.commands.CreateBono
 import com.upc.ven_con_plata_backend.estimating.domain.model.commands.UpdateBonoCommand;
 import com.upc.ven_con_plata_backend.estimating.domain.model.queries.GetAllBonosQuery;
 import com.upc.ven_con_plata_backend.estimating.domain.model.queries.GetBonoByIdQuery;
+import com.upc.ven_con_plata_backend.estimating.domain.model.queries.GetBonosByEstadoQuery;
+import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.EstadoBono;
 import com.upc.ven_con_plata_backend.estimating.domain.services.BonoCommandService;
 import com.upc.ven_con_plata_backend.estimating.domain.services.BonoQueryService;
 import com.upc.ven_con_plata_backend.estimating.interfaces.rest.resources.BonoResource;
@@ -41,6 +43,37 @@ public class BonoController {
         var bono = bonoOptional.get();
         var bonoResource = BonoResourceFromEntityAssembler.toResourceFromEntity(bono);
         return new ResponseEntity<>(bonoResource, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{bonoId}")
+    public ResponseEntity<BonoResource> updateBono(@PathVariable Long bonoId, @RequestBody UpdateBonoResource resource) {
+        var updateBonoCommand = UpdateBonoCommandFromResourceAssembler.toCommandFromResource(bonoId, resource);
+        var bonoOptional = bonoCommandService.handle(updateBonoCommand);
+
+        if (bonoOptional.isEmpty()) return ResponseEntity.badRequest().build();
+
+        var bono = bonoOptional.get();
+        var bonoResource = BonoResourceFromEntityAssembler.toResourceFromEntity(bono);
+        return ResponseEntity.ok(bonoResource);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BonoResource> getBonoById(@PathVariable Long id) {
+        var query = new GetBonoByIdQuery(id);
+        return bonoQueryService.handle(query)
+                .map(BonoResourceFromEntityAssembler::toResourceFromEntity)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<BonoResource>> getBonosByEstado(@RequestParam EstadoBono estado) {
+        var query = new GetBonosByEstadoQuery(estado);
+        var bonos = bonoQueryService.handle(query);
+        var resources = bonos.stream()
+                .map(BonoResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(resources);
     }
 /*
     @PutMapping("/{bonoId}")

@@ -12,4 +12,5 @@ public interface BonoQueryService {
     List<Bono> handle(GetBonosByCompanyIdQuery query);
     List<Bono> handle(GetBonosByInvestorIdQuery query);
     Optional<Bono> handle(GetBonoByIdQuery query);
+    List<Bono> handle(GetBonosByEstadoQuery query);
 }

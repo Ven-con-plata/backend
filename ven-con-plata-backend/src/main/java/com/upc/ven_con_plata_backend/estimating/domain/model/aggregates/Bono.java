@@ -138,6 +138,54 @@ public class Bono extends AuditableAbstractAggregateRoot<Bono> {
                 cashFlowScheduleInversor
         );
     }
+
+    public boolean puedeSerModificado() {
+        return this.estado == EstadoBono.BORRADOR && !estaVencido();
+    }
+
+    private void validarDatosFinancieros(BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaVencimiento) {
+        if (valorNominal == null || valorNominal.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El valor nominal debe ser mayor a cero");
+        }
+
+        if (valorComercial == null || valorComercial.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El valor comercial debe ser mayor a cero");
+        }
+
+        if (fechaVencimiento == null) {
+            throw new IllegalArgumentException("La fecha de vencimiento no puede ser nula");
+        }
+
+        if (fechaVencimiento.isBefore(LocalDate.now().plusDays(30))) {
+            throw new IllegalArgumentException("La fecha de vencimiento debe ser al menos 30 días en el futuro");
+        }
+    }
+
+    public void actualizarDatosFinancieros(BigDecimal valorNominal, BigDecimal valorComercial, LocalDate fechaVencimiento) {
+        validarDatosFinancieros(valorNominal, valorComercial, fechaVencimiento);
+        this.valorNominal = valorNominal;
+        this.valorComercial = valorComercial;
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public void actualizarTasas(BigDecimal tasaInteres, Periodicidad periodicidadInteres, BigDecimal cok, Periodicidad periodicidadCok) {
+        validarTasas(tasaInteres, cok);
+        this.tasaInteres = new Tasa(tasaInteres, periodicidadInteres);
+        this.cok = new Tasa(cok, periodicidadCok);
+    }
+
+    public void actualizarPeriodosGracia(Integer total, Integer parcial) {
+        if (total < 0 || parcial < 0 || parcial > total) {
+            throw new IllegalArgumentException("Periodos de gracia inválidos");
+        }
+        this.gracia = new PeriodosGracia(total, parcial);
+    }
+
+    public boolean estaVencido() {
+        return LocalDate.now().isAfter(this.fechaVencimiento);
+    }
+
+
 /*
     private void validarPuedeSerModificado() {
         if (this.estado != EstadoBono.BORRADOR) {

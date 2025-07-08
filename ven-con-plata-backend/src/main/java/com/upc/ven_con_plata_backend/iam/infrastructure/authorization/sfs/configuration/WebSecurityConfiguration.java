@@ -29,19 +29,6 @@ public class WebSecurityConfiguration {
     private final BCryptHashingService hashingService;
     private final AuthenticationEntryPoint unauthorizedRequestHandler;
 
-
-    public WebSecurityConfiguration(
-            @Qualifier("defaultUserDetailsService")
-            UserDetailsService userDetailsService,
-            BearerTokenService tokenService,
-            BCryptHashingService hashingService,
-            AuthenticationEntryPoint unauthorizedRequestHandler) {
-        this.userDetailsService = userDetailsService;
-        this.tokenService = tokenService;
-        this.hashingService = hashingService;
-        this.unauthorizedRequestHandler = unauthorizedRequestHandler;
-    }
-
     @Bean
     public BearerAuthorizationRequestFilter authorizationRequestFilter() {
         return new BearerAuthorizationRequestFilter(tokenService, userDetailsService);
@@ -77,8 +64,7 @@ public class WebSecurityConfiguration {
             return cors;
         }));
         http.csrf(csrfConfigurer -> csrfConfigurer.disable())
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(unauthorizedRequestHandler))
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
@@ -92,6 +78,18 @@ public class WebSecurityConfiguration {
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    public WebSecurityConfiguration(
+            @Qualifier("defaultUserDetailsService")
+            UserDetailsService userDetailsService,
+            BearerTokenService tokenService,
+            BCryptHashingService hashingService,
+            AuthenticationEntryPoint unauthorizedRequestHandler) {
+        this.userDetailsService = userDetailsService;
+        this.tokenService = tokenService;
+        this.hashingService = hashingService;
+        this.unauthorizedRequestHandler = unauthorizedRequestHandler;
     }
 
 }

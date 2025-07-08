@@ -62,7 +62,26 @@ public class BonoCommandServiceImpl implements BonoCommandService {
 
         return Optional.of(savedBono);
     }
-/*
+
+    @Override
+    public Optional<Bono> handle(UpdateBonoCommand command) {
+        Bono bono = bonoRepository.findById(command.bonoId())
+                .orElseThrow(() -> new IllegalArgumentException("Bono con ID %d no encontrado".formatted(command.bonoId())));
+
+        if (!bono.puedeSerModificado()) {
+            throw new IllegalStateException("El bono no puede ser modificado en su estado actual");
+        }
+
+        bono.actualizarDatosFinancieros(command.valorNominal(), command.valorComercial(), command.fechaVencimiento());
+        bono.actualizarTasas(command.tasaInteres(), command.periodicidadCok(), command.cok(), command.periodicidadCok());
+        bono.actualizarPeriodosGracia(command.periodosGraciaTotal(), command.periodosGraciaParcial());
+
+        bono.generarCashflowEIndicadores();
+
+        Bono bonoActualizado = bonoRepository.save(bono);
+        return Optional.of(bonoActualizado);
+    }
+    /*
     @Override
     public Optional<Bono> handle(UpdateBonoCommand command) {
         // 1. Obtener el bono que se va a actualizar

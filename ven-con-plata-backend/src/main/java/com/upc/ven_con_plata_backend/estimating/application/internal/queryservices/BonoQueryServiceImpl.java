@@ -4,6 +4,7 @@ import com.upc.ven_con_plata_backend.estimating.domain.model.aggregates.Bono;
 import com.upc.ven_con_plata_backend.estimating.domain.model.queries.*;
 import com.upc.ven_con_plata_backend.estimating.domain.services.BonoQueryService;
 import com.upc.ven_con_plata_backend.estimating.infrastructure.persistence.jpa.repositories.BonoRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,5 +48,10 @@ public class BonoQueryServiceImpl implements BonoQueryService {
     @Override
     public Optional<Bono> handle(GetBonoByIdQuery query) {
         return bonoRepository.findById(query.bonoId());
+    }
+
+    @Override
+    public List<Bono> handle(GetBonosByEstadoQuery query) {
+        return bonoRepository.findByEstado(query.estado());
     }
 }

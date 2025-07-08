@@ -1,6 +1,7 @@
 package com.upc.ven_con_plata_backend.estimating.infrastructure.persistence.jpa.repositories;
 
 import com.upc.ven_con_plata_backend.estimating.domain.model.aggregates.Bono;
+import com.upc.ven_con_plata_backend.estimating.domain.model.valueobjects.EstadoBono;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,4 +31,7 @@ public interface BonoRepository extends JpaRepository<Bono, Long> {
 
     @Query("SELECT b FROM Bono b LEFT JOIN FETCH b.cronogramas WHERE b.id = :id")
     Bono findByIdWithCronogramas(@Param("id") Long id);
+
+    List<Bono> findByEstado(EstadoBono estado);
+
 }
